@@ -1,0 +1,168 @@
+/* HERO */
+.hero {
+  height: 100vh;
+  background: url("https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9") center/cover no-repeat;
+  position: relative;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.hero h1 {
+  color: white;
+  font-size: 64px;
+  text-align: center;
+  line-height: 1.2;
+  font-family: 'Playfair Display', serif;
+}
+
+/* BUTTON */
+.btn-dark {
+  background: #222;
+  color: white;
+  padding: 12px 28px;
+  border: none;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+/* INTRO */
+.intro {
+  max-width: 650px;
+  margin: 100px auto;
+  text-align: center;
+}
+
+.intro p {
+  color: #777;
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+/* GRID */
+.grid {
+  display: flex;
+}
+
+.grid-left,
+.grid-right {
+  width: 50%;
+}
+
+.grid-row {
+  display: flex;
+}
+
+.grid-box {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-box.big {
+  height: 500px;
+}
+
+.grid-box.small {
+  height: 250px;
+  width: 50%;
+}
+
+/* IMAGES */
+.nail {
+  background-image: url("https://images.unsplash.com/photo-1604654894610-df63bc536371");
+}
+
+.location {
+  background-image: url("https://images.unsplash.com/photo-1515378791036-0648a3ef77b2");
+}
+
+.contact {
+  background-image: url("https://images.unsplash.com/photo-1519681393784-d120267933ba");
+}
+
+.gift {
+  background-image: url("https://images.unsplash.com/photo-1600891964599-f61ba0e24092");
+}
+
+.events {
+  background-image: url("https://images.unsplash.com/photo-1504198453319-5ce911bafcde");
+}
+
+.services {
+  background-image: url("https://images.unsplash.com/photo-1552693673-1bf958298935");
+}
+
+/* TEXT OVERLAY */
+.overlay-text {
+  text-align: center;
+}
+
+.overlay-text h2 {
+  font-size: 36px;
+  font-family: 'Playfair Display', serif;
+}
+
+.overlay-text p {
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+/* BOTTOM */
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  padding: 80px 10%;
+}
+
+.instagram h3 {
+  margin-bottom: 20px;
+}
+
+.insta-images {
+  display: flex;
+  gap: 20px;
+}
+
+.insta-images img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+/* SUBSCRIBE */
+.subscribe {
+  max-width: 300px;
+}
+
+.subscribe-box {
+  display: flex;
+  margin-top: 10px;
+}
+
+.subscribe input {
+  padding: 10px;
+  flex: 1;
+  border: 1px solid #ccc;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f5f5f5;
+  font-size: 12px;
+}
