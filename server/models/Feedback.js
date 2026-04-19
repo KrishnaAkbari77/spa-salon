@@ -1,20 +1,24 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const feedbackSchema = new mongoose.Schema({
   userId: { type: String, required: true },
   userName: { type: String, required: true },
   text: { type: String, required: true },
-  status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
-  createdAt: { type: Date, default: Date.now }
+  status: {
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending",
+  },
+  createdAt: { type: Date, default: Date.now },
 });
 
-feedbackSchema.set('toJSON', {
+feedbackSchema.set("toJSON", {
   virtuals: true,
   versionKey: false,
   transform: function (doc, ret) {
     ret.id = ret._id;
     delete ret._id;
-  }
+  },
 });
 
-export default mongoose.model('Feedback', feedbackSchema);
+export default mongoose.model("Feedback", feedbackSchema);

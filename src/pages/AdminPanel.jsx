@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -14,7 +15,7 @@ const AdminPanel = () => {
   const [users, setUsers] = useState([]);
   const [staff, setStaff] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
-  
+
   // Reschedule Modal State
   const [showModal, setShowModal] = useState(false);
   const [selectedAppt, setSelectedAppt] = useState(null);
@@ -31,14 +32,6 @@ const AdminPanel = () => {
   const [newStaffPhone, setNewStaffPhone] = useState("");
 
   const [currentDate, setCurrentDate] = useState(new Date());
-
-  useEffect(() => {
-    if (!user || user.role !== "admin") {
-      navigate("/");
-      return;
-    }
-    fetchData();
-  }, [user, navigate]);
 
   const fetchData = async () => {
     try {
@@ -61,6 +54,14 @@ const AdminPanel = () => {
       console.error("Failed to fetch admin data", err);
     }
   };
+
+  useEffect(() => {
+    if (!user || user.role !== "admin") {
+      navigate("/");
+      return;
+    }
+    fetchData();
+  }, [user, navigate]);
 
   const openRescheduleModal = (appt) => {
     setSelectedAppt(appt);
@@ -135,7 +136,7 @@ const AdminPanel = () => {
   };
 
   const handleDeleteStaff = async (id) => {
-    if(!window.confirm("Are you sure you want to remove this staff member?")) return;
+    if (!window.confirm("Are you sure you want to remove this staff member?")) return;
     try {
       await fetch(`http://localhost:3001/staff/${id}`, { method: "DELETE" });
       fetchData();
@@ -145,7 +146,7 @@ const AdminPanel = () => {
   };
 
   const handleDeleteUser = async (id) => {
-    if(!window.confirm("Are you sure you want to delete this user?")) return;
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
     try {
       await fetch(`http://localhost:3001/users/${id}`, { method: "DELETE" });
       fetchData();
@@ -176,7 +177,7 @@ const AdminPanel = () => {
         dataByDate[dateStr] = { date: dateStr, revenue: 0, appointments: 0 };
       }
       dataByDate[dateStr].appointments += 1;
-      const price = parseFloat(String(app.price).replace(/[^0-9.-]+/g,""));
+      const price = parseFloat(String(app.price).replace(/[^0-9.-]+/g, ""));
       if (!isNaN(price)) {
         dataByDate[dateStr].revenue += price;
       }
@@ -206,9 +207,9 @@ const AdminPanel = () => {
       const dayAppointments = appointments.filter(app => app.date === dateStr);
 
       days.push(
-        <div 
-          key={day} 
-          className="calendar-day" 
+        <div
+          key={day}
+          className="calendar-day"
           onClick={() => {
             setAddApptData({ ...addApptData, date: dateStr });
             setShowAddApptModal(true);
@@ -236,7 +237,7 @@ const AdminPanel = () => {
   return (
     <div className="admin-page">
       <div className="admin-container">
-        
+
         <div className="admin-sidebar card">
           <h3>Admin Panel</h3>
           <ul>
@@ -294,8 +295,8 @@ const AdminPanel = () => {
                   <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
-                      <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fill: '#666', fontSize: 12}} dy={10} />
-                      <YAxis axisLine={false} tickLine={false} tick={{fill: '#666', fontSize: 12}} dx={-10} />
+                      <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#666', fontSize: 12 }} dy={10} />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fill: '#666', fontSize: 12 }} dx={-10} />
                       <RechartsTooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
                       <Line type="monotone" dataKey="revenue" stroke="#d4af37" strokeWidth={3} dot={{ r: 4, fill: '#d4af37', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6, fill: '#2E8B57' }} />
                     </LineChart>
@@ -306,9 +307,9 @@ const AdminPanel = () => {
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
-                      <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fill: '#666', fontSize: 12}} dy={10} />
-                      <YAxis axisLine={false} tickLine={false} tick={{fill: '#666', fontSize: 12}} dx={-10} />
-                      <RechartsTooltip cursor={{fill: '#f5f5f5'}} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+                      <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#666', fontSize: 12 }} dy={10} />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fill: '#666', fontSize: 12 }} dx={-10} />
+                      <RechartsTooltip cursor={{ fill: '#f5f5f5' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
                       <Bar dataKey="appointments" fill="#2E8B57" radius={[6, 6, 0, 0]} maxBarSize={50} />
                     </BarChart>
                   </ResponsiveContainer>
@@ -325,7 +326,7 @@ const AdminPanel = () => {
                   <Plus size={16} /> New Appointment
                 </button>
               </div>
-              
+
               <div className="calendar-controls">
                 <button onClick={prevMonth}>&lt;</button>
                 <h3>{currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</h3>
@@ -422,7 +423,7 @@ const AdminPanel = () => {
           {activeTab === 'staff' && (
             <div className="tab-section">
               <h2>Staff Management</h2>
-              
+
               <form onSubmit={handleAddStaff} className="add-staff-form">
                 <h4>Add New Staff</h4>
                 <div className="form-row">
@@ -530,23 +531,23 @@ const AdminPanel = () => {
             <form onSubmit={handleAddAppointment}>
               <div className="form-group">
                 <label>User ID</label>
-                <select value={addApptData.userId} onChange={e => setAddApptData({...addApptData, userId: e.target.value})} required>
+                <select value={addApptData.userId} onChange={e => setAddApptData({ ...addApptData, userId: e.target.value })} required>
                   <option value="">Select User</option>
                   {users.map(u => <option key={u.id} value={u.id}>{u.name} (#{u.id})</option>)}
                 </select>
               </div>
               <div className="form-group">
                 <label>Service</label>
-                <input type="text" placeholder="e.g. Swedish Massage" value={addApptData.service} onChange={e => setAddApptData({...addApptData, service: e.target.value})} required />
+                <input type="text" placeholder="e.g. Swedish Massage" value={addApptData.service} onChange={e => setAddApptData({ ...addApptData, service: e.target.value })} required />
               </div>
               <div className="form-row">
                 <div className="form-group">
                   <label>Date</label>
-                  <input type="date" value={addApptData.date} onChange={e => setAddApptData({...addApptData, date: e.target.value})} required />
+                  <input type="date" value={addApptData.date} onChange={e => setAddApptData({ ...addApptData, date: e.target.value })} required />
                 </div>
                 <div className="form-group">
                   <label>Time</label>
-                  <input type="time" value={addApptData.time} onChange={e => setAddApptData({...addApptData, time: e.target.value})} required />
+                  <input type="time" value={addApptData.time} onChange={e => setAddApptData({ ...addApptData, time: e.target.value })} required />
                 </div>
               </div>
               <button type="submit" className="btn-submit-reschedule">Add Appointment</button>

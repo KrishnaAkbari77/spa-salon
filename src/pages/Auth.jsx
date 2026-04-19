@@ -10,7 +10,7 @@ const Auth = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  
+
   const { login, register, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -43,7 +43,11 @@ const Auth = () => {
       <div className="auth-container card">
         <div className="auth-header">
           <h2>{isLogin ? "Welcome Back" : "Create Account"}</h2>
-          <p>{isLogin ? "Log in to manage your appointments" : "Sign up to book spa services"}</p>
+          <p>
+            {isLogin
+              ? "Log in to manage your appointments"
+              : "Sign up to book spa services"}
+          </p>
         </div>
 
         {error && <div className="auth-error">{error}</div>}
@@ -52,23 +56,23 @@ const Auth = () => {
           {!isLogin && (
             <div className="form-group">
               <label>Full Name</label>
-              <input 
-                type="text" 
-                value={name} 
-                onChange={e => setName(e.target.value)} 
-                required={!isLogin} 
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required={!isLogin}
                 placeholder="Jane Doe"
               />
             </div>
           )}
-          
+
           <div className="form-group">
             <label>Email Address</label>
-            <input 
-              type="email" 
-              value={email} 
-              onChange={e => setEmail(e.target.value)} 
-              required 
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
               placeholder="jane@example.com"
             />
           </div>
@@ -76,11 +80,11 @@ const Auth = () => {
           {!isLogin && (
             <div className="form-group">
               <label>Phone Number</label>
-              <input 
-                type="tel" 
-                value={phone} 
-                onChange={e => setPhone(e.target.value)} 
-                required={!isLogin} 
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required={!isLogin}
                 placeholder="+1 (555) 123-4567"
               />
             </div>
@@ -88,11 +92,11 @@ const Auth = () => {
 
           <div className="form-group">
             <label>Password</label>
-            <input 
-              type="password" 
-              value={password} 
-              onChange={e => setPassword(e.target.value)} 
-              required 
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
               placeholder="••••••••"
             />
           </div>
@@ -105,7 +109,13 @@ const Auth = () => {
         <div className="auth-footer">
           <p>
             {isLogin ? "Don't have an account?" : "Already have an account?"}
-            <span onClick={() => { setIsLogin(!isLogin); setError(""); }} className="auth-toggle">
+            <span
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setError("");
+              }}
+              className="auth-toggle"
+            >
               {isLogin ? " Sign Up" : " Log In"}
             </span>
           </p>

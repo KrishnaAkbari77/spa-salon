@@ -23,11 +23,15 @@ const Offers = () => {
       {/* PROMOTIONS INTRO */}
       <section className="promotions-intro container">
         <div className="promo-text">
-          <h2>At aura, we offer a range of special promotions & benefits designed to enhance your beauty experience.</h2>
-          <p>Enjoy personalized consultations, expert care, valuable package & membership deals & exclusive monthly offers ensuring your each visit is rewarding & experience - top notch!</p>
-        </div>
-        <div className="promo-img">
-          <img src="https://images.unsplash.com/photo-1606240212937-2909476b7eeb?auto=format&fit=crop&w=600&q=80" alt="Promotions" />
+          <h2>
+            At aura, we offer a range of special promotions & benefits designed
+            to enhance your beauty experience.
+          </h2>
+          <p>
+            Enjoy personalized consultations, expert care, valuable package &
+            membership deals & exclusive monthly offers ensuring your each visit
+            is rewarding & experience - top notch!
+          </p>
         </div>
       </section>
 
@@ -35,16 +39,22 @@ const Offers = () => {
       <section className="mini-banners container">
         <div className="banner dark-banner">
           <h3>GRAB THE MEMBERSHIP NOW</h3>
-          <p>GET <strong>20%</strong> OFF ON ALL YOUR VISITS FOR A WHOLE YEAR</p>
+          <p>
+            GET <strong>20%</strong> OFF ON ALL YOUR VISITS FOR A WHOLE YEAR
+          </p>
         </div>
         <div className="banner light-banner">
           <h3>GIFT THEM AN ENTICING EXPERIENCE WITH THE</h3>
-          <p><strong>AURA GIFT CARD</strong></p>
+          <p>
+            <strong>AURA GIFT CARD</strong>
+          </p>
         </div>
         <div className="banner img-banner">
           <div className="overlay">
             <h3>Exclusively for Duty Free Customers</h3>
-            <p><strong>20% benefit</strong> on services</p>
+            <p>
+              <strong>20% benefit</strong> on services
+            </p>
           </div>
         </div>
       </section>
@@ -112,7 +122,9 @@ const Offers = () => {
           <div className="enquire-content">
             <h2>Flat 30% off on your first visit</h2>
             <p>*at select locations *t&c apply</p>
-            <button className="btn-enquire" onClick={() => navigate("/book")}>BOOK AN APPOINTMENT</button>
+            <button className="btn-enquire" onClick={() => navigate("/book")}>
+              BOOK AN APPOINTMENT
+            </button>
           </div>
         </div>
       </section>

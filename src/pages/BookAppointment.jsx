@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import React, { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react";
@@ -5,25 +6,24 @@ import "./BookAppointment.css";
 
 // ─── Component ──────────────────────────────────────────────────────────────
 const BookAppointment = () => {
-  const location  = useLocation();
-  const navigate  = useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
 
-  const initialService     = queryParams.get("service")     || "FACIAL THERAPY";
+  const initialService = queryParams.get("service") || "FACIAL THERAPY";
   const initialSpecialistId = queryParams.get("specialistId")
     ? parseInt(queryParams.get("specialistId"), 10)
     : null;
 
   const [selectedService, setSelectedService] = useState(initialService);
-  const [sessionLength,   setSessionLength]   = useState("30 mins");
-  const [place,           setPlace]           = useState("At Parlor");
-  const [date,            setDate]            = useState("");
-  const [time,            setTime]            = useState("");
-  const [mobile,          setMobile]          = useState("");
-  const [address,         setAddress]         = useState("");
+  const [sessionLength, setSessionLength] = useState("30 mins");
+  const [place, setPlace] = useState("At Parlor");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [address, setAddress] = useState("");
 
   const [specialistsData, setSpecialistsData] = useState([]);
-  const [loadingStaff, setLoadingStaff] = useState(true);
   const [assignedStaff, setAssignedStaff] = useState(null);
 
   useEffect(() => {
@@ -36,8 +36,6 @@ const BookAppointment = () => {
         }
       } catch (err) {
         console.error(err);
-      } finally {
-        setLoadingStaff(false);
       }
     };
     fetchStaff();
@@ -57,7 +55,9 @@ const BookAppointment = () => {
       if (lockedSpecialist) {
         setAssignedStaff(lockedSpecialist);
       } else {
-        const matched = specialistsData.filter((s) => s.serviceKey === selectedService);
+        const matched = specialistsData.filter(
+          (s) => s.serviceKey === selectedService,
+        );
         const pool = matched.length > 0 ? matched : specialistsData;
         setAssignedStaff(pool[Math.floor(Math.random() * pool.length)]);
       }
@@ -65,18 +65,28 @@ const BookAppointment = () => {
   }, [selectedService, lockedSpecialist, specialistsData]);
 
   // ── Derived ────────────────────────────────────────────────────────────────
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
-  const isHairService = ["HAIRCUTS, STYLING & COLORING", "HAIR TREATMENTS"].includes(selectedService);
+  const isHairService = [
+    "HAIRCUTS, STYLING & COLORING",
+    "HAIR TREATMENTS",
+  ].includes(selectedService);
 
   const getPrice = () => {
     if (isHairService) return "₹50+";
     switch (sessionLength) {
-      case "30 mins":  return "₹20";
-      case "60 mins":  return "₹40";
-      case "90 mins":  return "₹60";
-      case "120 mins": return "₹80";
-      default:         return "₹20";
+      case "30 mins":
+        return "₹20";
+      case "60 mins":
+        return "₹40";
+      case "90 mins":
+        return "₹60";
+      case "120 mins":
+        return "₹80";
+      default:
+        return "₹20";
     }
   };
 
@@ -84,20 +94,22 @@ const BookAppointment = () => {
     e.preventDefault();
     navigate("/checkout", {
       state: {
-        service:  selectedService,
+        service: selectedService,
         duration: !isHairService ? sessionLength : null,
         place,
-        address:  place === "At Home" ? address : null,
+        address: place === "At Home" ? address : null,
         date,
         time,
         mobile,
-        price:    getPrice(),
-        staff: assignedStaff ? {
-          id:    assignedStaff.id,
-          name:  assignedStaff.name,
-          role:  assignedStaff.role,
-          image: assignedStaff.image,
-        } : null,
+        price: getPrice(),
+        staff: assignedStaff
+          ? {
+              id: assignedStaff.id,
+              name: assignedStaff.name,
+              role: assignedStaff.role,
+              image: assignedStaff.image,
+            }
+          : null,
       },
     });
   };
@@ -106,9 +118,12 @@ const BookAppointment = () => {
   return (
     <div className="book-page">
       <div className="book-container">
-
         <div className="book-header">
-          <button type="button" className="back-btn" onClick={() => navigate(-1)}>
+          <button
+            type="button"
+            className="back-btn"
+            onClick={() => navigate(-1)}
+          >
             <ArrowLeft size={24} />
           </button>
           <h2>Book Service</h2>
@@ -116,7 +131,6 @@ const BookAppointment = () => {
         </div>
 
         <form onSubmit={handleBook}>
-
           {/* ── Service ── */}
           <div className="form-section">
             <label>Select Service</label>
@@ -131,8 +145,12 @@ const BookAppointment = () => {
               <option value="FACIAL THERAPY">FACIAL THERAPY</option>
               <option value="HOLISTIC MASSAGE">HOLISTIC MASSAGE</option>
               <option value="HOT STONE MASSAGE">HOT STONE MASSAGE</option>
-              <option value="HAIRCUTS, STYLING & COLORING">Haircuts, styling, coloring (balayage, highlights)</option>
-              <option value="HAIR TREATMENTS">Hair treatments (botox, keratin, nano-plastia)</option>
+              <option value="HAIRCUTS, STYLING & COLORING">
+                Haircuts, styling, coloring (balayage, highlights)
+              </option>
+              <option value="HAIR TREATMENTS">
+                Hair treatments (botox, keratin, nano-plastia)
+              </option>
             </select>
           </div>
 
@@ -149,7 +167,14 @@ const BookAppointment = () => {
                   >
                     <span className="len">{len}</span>
                     <span className="price">
-                      ₹{len === "30 mins" ? "20" : len === "60 mins" ? "40" : len === "90 mins" ? "60" : "80"}
+                      ₹
+                      {len === "30 mins"
+                        ? "20"
+                        : len === "60 mins"
+                          ? "40"
+                          : len === "90 mins"
+                            ? "60"
+                            : "80"}
                     </span>
                   </div>
                 ))}
@@ -159,20 +184,27 @@ const BookAppointment = () => {
 
           {/* ── Assigned Staff ── */}
           <div className="form-section">
-            <label>
-              Assigned specialist ✨
-            </label>
+            <label>Assigned specialist ✨</label>
             {assignedStaff ? (
               <div className="staff-card">
                 <div className="staff-card-info">
-                  <span className="staff-card-role">{assignedStaff.role}</span> -
-                  <i><span className="staff-card-name">{assignedStaff.name}</span>  </i>
+                  <span className="staff-card-role">{assignedStaff.role}</span>{" "}
+                  -
+                  <i>
+                    <span className="staff-card-name">
+                      {assignedStaff.name}
+                    </span>{" "}
+                  </i>
                 </div>
               </div>
             ) : (
               <div className="staff-card">
                 <div className="staff-card-info">
-                  <i><span className="staff-card-name">Loading specialist...</span></i>
+                  <i>
+                    <span className="staff-card-name">
+                      Loading specialist...
+                    </span>
+                  </i>
                 </div>
               </div>
             )}
@@ -203,7 +235,11 @@ const BookAppointment = () => {
                 onChange={(e) => setAddress(e.target.value)}
                 className="text-input"
                 required
-                style={{ resize: "vertical", minHeight: "80px", padding: "15px" }}
+                style={{
+                  resize: "vertical",
+                  minHeight: "80px",
+                  padding: "15px",
+                }}
               />
             </div>
           )}
@@ -212,7 +248,12 @@ const BookAppointment = () => {
           <div className="form-section">
             <label>Select date</label>
             <div className="input-wrapper">
-              <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
               <Calendar size={18} className="input-icon" />
             </div>
           </div>
@@ -221,7 +262,12 @@ const BookAppointment = () => {
           <div className="form-section">
             <label>Select time</label>
             <div className="input-wrapper">
-              <input type="time" value={time} onChange={(e) => setTime(e.target.value)} required />
+              <input
+                type="time"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                required
+              />
               <Clock size={18} className="input-icon" />
             </div>
           </div>
@@ -249,7 +295,6 @@ const BookAppointment = () => {
               Continue to Payment
             </button>
           </div>
-
         </form>
       </div>
     </div>
