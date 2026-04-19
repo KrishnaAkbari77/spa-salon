@@ -1,0 +1,96 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Jane Doe",
+      "email": "jane.doe@example.com",
+      "phone": "+1 (555) 123-4567"
+    },
+    {
+      "name": "Krishna Akbari",
+      "email": "akbarikrishna44@gmail.com",
+      "phone": "123456789",
+      "password": "123456",
+      "id": 2
+    },
+    {
+      "id": 3,
+      "name": "Administrator",
+      "email": "admin@aura.com",
+      "phone": "0000000000",
+      "password": "admin",
+      "role": "admin"
+    }
+  ],
+  "appointments": [
+    {
+      "id": 1,
+      "userId": 1,
+      "service": "Full Body Massage",
+      "duration": "90 mins",
+      "place": "At Parlor",
+      "address": "",
+      "date": "2023-11-15",
+      "time": "14:00",
+      "price": "$60",
+      "paymentMethod": "card",
+      "status": "completed"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "service": "Facial Therapy",
+      "duration": "60 mins",
+      "place": "At Parlor",
+      "address": "",
+      "date": "2024-01-11",
+      "time": "11:00",
+      "price": "$40",
+      "paymentMethod": "razorpay",
+      "status": "completed"
+    },
+    {
+      "userId": 2,
+      "service": "FACIAL THERAPY",
+      "duration": "30 mins",
+      "place": "At Parlor",
+      "address": "",
+      "date": "2026-04-30",
+      "time": "17:19",
+      "price": "$20",
+      "paymentMethod": "cod",
+      "status": "upcoming",
+      "id": 3
+    }
+  ],
+  "staff": [
+    {
+      "id": 1,
+      "name": "Sarah Jenkins",
+      "role": "Lead Massage Therapist",
+      "phone": "555-0101"
+    },
+    {
+      "id": 2,
+      "name": "David Chen",
+      "role": "Senior Stylist",
+      "phone": "555-0102"
+    }
+  ],
+  "messages": [
+    {
+      "userId": 1,
+      "text": "Your appointment for Facial Therapy has been rescheduled by the admin to 2024-01-11 at 11:00.",
+      "createdAt": "2026-04-18T09:01:40.753Z",
+      "read": false,
+      "id": 1
+    },
+    {
+      "userId": 2,
+      "text": "Your appointment for FACIAL THERAPY has been rescheduled by the admin to 2026-04-30 at 17:19.",
+      "createdAt": "2026-04-18T09:03:26.302Z",
+      "read": false,
+      "id": 2
+    }
+  ]
+}

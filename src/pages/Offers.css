@@ -1,0 +1,282 @@
+.offers-page {
+  padding-top: 80px;
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+/* OFFERS HERO */
+.offers-hero {
+  background-image: url('https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=1600&q=80');
+  background-size: cover;
+  background-position: center;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.offers-hero::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1;
+}
+
+.offers-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+}
+
+.offers-hero-content h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.voucher-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-style: italic;
+  margin-bottom: 5px;
+}
+
+.voucher-price {
+  font-size: 48px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.voucher-sub {
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* PROMOTIONS INTRO */
+.promotions-intro {
+  display: flex;
+  padding: 80px 5%;
+  gap: 60px;
+  align-items: center;
+}
+
+.promo-text {
+  flex: 1;
+}
+
+.promo-text h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.promo-text p {
+  font-size: 15px;
+  color: var(--light-text);
+  line-height: 1.8;
+}
+
+.promo-img {
+  flex: 1;
+}
+
+.promo-img img {
+  border-radius: 20px;
+  width: 100%;
+}
+
+/* MINI BANNERS */
+.mini-banners {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 0 5% 80px;
+}
+
+.banner {
+  padding: 40px 20px;
+  text-align: center;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 150px;
+}
+
+.banner h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.banner p {
+  font-size: 14px;
+}
+
+.dark-banner {
+  background: var(--primary);
+  color: #fff;
+}
+
+.dark-banner h3 {
+  color: #fff;
+}
+
+.light-banner {
+  background: #fff;
+  border: 1px solid #ddd;
+}
+
+.img-banner {
+  background-image: url('https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=60');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  color: #fff;
+}
+
+.img-banner h3 {
+  color: #fff;
+}
+
+.img-banner .overlay {
+  background: rgba(0,0,0,0.5);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* SIGNATURE PACKAGES */
+.signature-packages {
+  padding: 40px 5% 80px;
+  text-align: center;
+}
+
+.signature-packages h2 {
+  font-size: 36px;
+  margin-bottom: 50px;
+}
+
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.package-card {
+  background: #fff;
+  border: 1px solid #eee;
+  padding: 40px 20px;
+  border-radius: 15px;
+  transition: 0.3s;
+}
+
+.package-card:hover {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transform: translateY(-5px);
+  border-color: var(--primary);
+}
+
+.package-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.pay-text {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 5px;
+}
+
+.package-card h4 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+.package-details p {
+  font-size: 12px;
+  color: var(--light-text);
+  margin-bottom: 5px;
+}
+
+/* ENQUIRE SECTION */
+.enquire-section {
+  padding: 0 5% 100px;
+}
+
+.enquire-bg {
+  background-image: url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1200&q=80');
+  background-size: cover;
+  background-position: center;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.enquire-bg::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1;
+}
+
+.enquire-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+}
+
+.enquire-content h2 {
+  color: #fff;
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.enquire-content p {
+  font-size: 16px;
+  font-style: italic;
+  margin-bottom: 30px;
+}
+
+.btn-enquire {
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 12px 30px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  border-radius: 30px;
+  text-transform: uppercase;
+  transition: 0.3s;
+}
+
+.btn-enquire:hover {
+  background: #fff;
+  color: #000;
+}
+
+@media (max-width: 900px) {
+  .promotions-intro, .mini-banners {
+    flex-direction: column;
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,101 +1,191 @@
 import React from "react";
 import "./Home.css";
+import { Link } from "react-router-dom";
 
+// Assume we have these or we'll use placeholders
+const heroImg = "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=2000&q=80";
+const service1 = "https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60";
+const service2 = "https://images.unsplash.com/photo-1552693673-1bf958298935?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60";
+const service3 = "https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60";
+const service4 = "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60";
 
 const Home = () => {
   return (
     <div className="home">
-
-      {/* HERO */}
-      <section className="hero">
-        <div className="hero-overlay">
-          <h1>
-            Elevated <br /> Beauty & Wellness
-          </h1>
-          <button className="btn-dark">LEARN MORE</button>
+      {/* HERO SECTION */}
+      <section className="hero" style={{ backgroundImage: `url(${heroImg})` }}>
+        <div className="hero-content">
+          <h1 className="hero-title">Restore Body<br/>And Mind</h1>
+          <p className="hero-subtitle">Holistic therapies to renew your mind, body and spirit. Discover our range of treatments tailored to your unique needs.</p>
+          <Link to="/book" className="btn-book-now">BOOK APPOINTMENT</Link>
         </div>
       </section>
 
-      {/* INTRO TEXT */}
-      <section className="intro">
-        <p>
-          With multiple locations throughout New York City, busy New Yorkers can
-          enjoy a quick manicure, pedicure or express facial in a peaceful,
-          rejuvenating ambiance. Our nurturing array of manicure, pedicure,
-          body and facial services are enhanced by quality personal service
-          from a staff of certified professionals. So come enjoy the
-          revitalizing solitude of our day spa, and let us pamper you with the
-          quality and excellence you deserve.
-        </p>
-        <button className="btn-dark">LEARN MORE</button>
+      {/* ABOUT US */}
+      <section className="about-section container">
+        <div className="about-left">
+          <h2>About Us</h2>
+          <p>We provide a full range of salon treatments and styling services provided by a team of professional stylists.</p>
+        </div>
+        <div className="about-right">
+          <h3>We Believe That Wellness Is A Healing Process That Is Unique To Every Individual. We Are Creating An Environment Designed To Support Your Total Wellness Journey.</h3>
+        </div>
       </section>
 
-      {/* GRID */}
-      <section className="grid">
-
-        {/* LEFT */}
-        <div className="grid-left">
-          <div className="grid-box big nail">
-            <div className="overlay-text">
-              <h2>Nail Art</h2>
-              <p>WE PROVIDE A VARIETY OF UNIQUE NAIL ART</p>
-            </div>
+      {/* TOP SERVICES */}
+      <section className="top-services container">
+        <div className="top-services-header">
+          <h2>Our Top <em>Services</em></h2>
+          <p>Our experienced team provides a full range of spa treatments designed to leave you feeling relaxed and rejuvenated.</p>
+        </div>
+        
+        <div className="services-grid-round">
+          <div className="service-round">
+            <div className="img-wrapper"><img src={service1} alt="Spa" /></div>
+            <h4>Spa & Wellness</h4>
           </div>
-
-          <div className="grid-row">
-            <div className="grid-box small location">
-              <h3>Locations</h3>
-            </div>
-
-            <div className="grid-box small contact">
-              <h3>Contact Us</h3>
-            </div>
+          <div className="service-round">
+            <div className="img-wrapper"><img src={service2} alt="Facial" /></div>
+            <h4>Facial Therapy</h4>
+          </div>
+          <div className="service-round">
+            <div className="img-wrapper"><img src={service3} alt="Massage" /></div>
+            <h4>Holistic Massage</h4>
+          </div>
+          <div className="service-round">
+            <div className="img-wrapper"><img src={service4} alt="Hot Stone" /></div>
+            <h4>Hot Stone Massage</h4>
           </div>
         </div>
-
-        {/* RIGHT */}
-        <div className="grid-right">
-          <div className="grid-row">
-            <div className="grid-box small gift">
-              <h3>Gift Cards</h3>
-            </div>
-
-            <div className="grid-box small events">
-              <h3>Events</h3>
-            </div>
-          </div>
-
-          <div className="grid-box big services">
-            <div className="overlay-text">
-              <h2>Services</h2>
-              <p>FROM MANICURE TO FULL SPA PACKAGES</p>
-            </div>
-          </div>
-        </div>
-
       </section>
 
-      {/* INSTAGRAM + SUBSCRIBE */}
-      <section className="bottom">
+      {/* WELLNESS CARE */}
+      <section className="wellness-care container">
+        <div className="wellness-left">
+          <p>Let us help you to feel completely revitalized. Our Spa, Massage Therapy and full list of treatments offer exactly what you need to achieve relaxation, peace and wellness.</p>
+        </div>
+        <div className="wellness-right">
+          <h2>Our Trusted Partner In Holistic Wellness Care With Our Expert Spa Treatments</h2>
+        </div>
+      </section>
 
-        <div className="instagram">
-          <h3>Follow us on Instagram @Spabelles</h3>
-          <div className="insta-images">
-            <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371" />
-            <img src="https://images.unsplash.com/photo-1607779097040-26e80aa78e66" />
+      {/* STATS */}
+      <section className="stats-section">
+        <div className="container stats-grid">
+          <div className="stat">
+            <h3>100%</h3>
+            <p>Client Satisfaction</p>
+          </div>
+          <div className="stat">
+            <h3>10+</h3>
+            <p>Years Experience</p>
+          </div>
+          <div className="stat">
+            <h3>30+</h3>
+            <p>Premium Spa</p>
+          </div>
+          <div className="stat">
+            <h3>24/7</h3>
+            <p>We Treat You Right</p>
           </div>
         </div>
+      </section>
 
-        <div className="subscribe">
-          <h3>Subscribe</h3>
-          <p>Sign up with your email address to receive news and updates.</p>
-          <div className="subscribe-box">
-            <input placeholder="Email Address" />
-            <button className="btn-dark">SIGN UP</button>
+      {/* IMAGE GALLERY SECTION */}
+      <section className="gallery-section container">
+        <div className="gallery-grid">
+          <div className="gallery-col col-1">
+            <img src={service1} alt="Gallery 1" />
+            <img src={service2} alt="Gallery 2" />
           </div>
-          <small>We respect your privacy</small>
+          <div className="gallery-col col-2">
+            <img src={service3} alt="Gallery 3" />
+            <div className="gallery-text-box">
+              <p>We use best wellness techniques with modern equipment & natural oils to treat your mind & body. Enjoy the calming atmosphere and discover the wellness secret.</p>
+            </div>
+          </div>
+          <div className="gallery-col col-3">
+            <img src={service4} alt="Gallery 4" />
+            <h2>Our Spa Services & Sanctuary Of Calm Offers Every Nurturing Treatment You Receive</h2>
+          </div>
         </div>
+      </section>
 
+      {/* PRICING */}
+      <section className="pricing-aroma container">
+        <div className="pricing-grid">
+          <div className="pricing-box">
+            <h4>Value Pricing</h4>
+            <p>We design our service packages thoughtfully so you can get the best service at competitive prices.</p>
+          </div>
+          <div className="pricing-box">
+            <h4>Speciality</h4>
+            <p>We do what we do with deep passion. We strive to provide an outstanding experience.</p>
+          </div>
+          <div className="pricing-box">
+            <h4>Years of Experience</h4>
+            <p>Our therapists have over a decade of experience, ensuring your relaxation is in the best hands.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="testimonials container">
+        <h2>Our Client <em>Testimonial</em></h2>
+        <div className="testimonial-grid">
+          <div className="testimonial">
+            <p className="quote">"I had a fantastic experience. The staff is so welcoming and the massage was the best I've ever had. Highly recommend to everyone looking for a relaxing day!"</p>
+            <div className="author">- Jane Doe</div>
+          </div>
+          <div className="testimonial">
+            <p className="quote">"Beautiful ambiance, excellent service. I left feeling completely rejuvenated. The hot stone massage is an absolute must-try."</p>
+            <div className="author">- Sarah Smith</div>
+          </div>
+          <div className="testimonial">
+            <p className="quote">"The facial treatment was divine. The esthetician was very knowledgeable and used high-quality products. My skin is glowing!"</p>
+            <div className="author">- Emily Rose</div>
+          </div>
+        </div>
+      </section>
+
+      {/* BOOK APPOINTMENT CTA */}
+      <section className="book-cta container">
+        <div className="book-cta-wrapper">
+          <div className="book-form">
+            <h2>Book Your <em>Appointment</em> Today</h2>
+            <form>
+              <div className="form-group">
+                <input type="text" placeholder="Your Name" />
+                <input type="email" placeholder="Email" />
+              </div>
+              <div className="form-group">
+                <input type="date" />
+                <select>
+                  <option>Select Service</option>
+                  <option>SPA PACKAGES</option>
+                  <option>NAIL ART</option>
+                  <option>MANICURE / PEDICURE</option>
+                  <option>FACIAL</option>
+                  <option>WAXING</option>
+                  <option>BODY MASSAGE</option>
+                  <option>BODY TREATMENTS</option>
+                  <option>MICRODERMABRASION</option>
+                  <option>EYELASH EXTENSIONS</option>
+                  <option>PHOTOFACIAL TREATMENT</option>
+                  <option>SPA & WELLNESS</option>
+                  <option>FACIAL THERAPY</option>
+                  <option>HOLISTIC MASSAGE</option>
+                  <option>HOT STONE MASSAGE</option>
+                </select>
+              </div>
+              <textarea placeholder="Message"></textarea>
+              <Link to="/book" className="btn-submit" style={{ display: 'inline-block', textAlign: 'center' }}>Book Appointment</Link>
+            </form>
+          </div>
+          <div className="book-img">
+            <img src={service1} alt="Book" />
+          </div>
+        </div>
       </section>
     </div>
   );

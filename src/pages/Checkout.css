@@ -1,0 +1,264 @@
+.checkout-page {
+  padding-top: 100px;
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+.checkout-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+.checkout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.checkout-header h2 {
+  font-size: 32px;
+  color: var(--primary);
+  margin: 0;
+}
+
+.checkout-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.booking-summary {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.booking-summary h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  color: var(--light-text);
+  font-size: 15px;
+}
+
+.summary-item span:last-child {
+  color: var(--text);
+  font-weight: 500;
+  text-align: right;
+  max-width: 60%;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 20px;
+  margin-top: 10px;
+  border-top: 1px dashed #ddd;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--primary);
+}
+
+.payment-form {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.payment-form h3 {
+  font-size: 24px;
+  margin-bottom: 25px;
+}
+
+.payment-methods {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.method-box {
+  border: 2px solid #eee;
+  border-radius: 12px;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--light-text);
+}
+
+.method-box span {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.method-box:hover {
+  border-color: var(--primary);
+  background: rgba(47, 51, 36, 0.02);
+}
+
+.method-box.selected {
+  border-color: var(--primary);
+  background: rgba(47, 51, 36, 0.05);
+  color: var(--primary);
+}
+
+.card-details-form, .paypal-details, .salon-details {
+  background: #F9F8F6;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.paypal-details p, .salon-details p {
+  color: var(--light-text);
+  text-align: center;
+  font-size: 15px;
+  margin: 0;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  color: var(--light-text);
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-group.half {
+  flex: 1;
+}
+
+.btn-pay-now {
+  width: 100%;
+  padding: 16px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-pay-now:hover:not(.processing) {
+  background: var(--secondary);
+}
+
+.btn-pay-now.processing {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.slide-down {
+  animation: slideDown 0.3s ease forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* SUCCESS VIEW */
+.success-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.success-card {
+  background: #fff;
+  padding: 50px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  max-width: 500px;
+  width: 90%;
+  animation: fadeInScale 0.5s ease forwards;
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.success-card h2 {
+  font-size: 28px;
+  margin: 20px 0 10px;
+}
+
+.success-card p {
+  color: var(--light-text);
+  margin-bottom: 20px;
+}
+
+.success-details {
+  background: var(--bg);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.success-details p {
+  margin: 10px 0;
+  color: var(--text);
+}
+
+.success-details p strong {
+  display: inline-block;
+  width: 80px;
+  color: var(--light-text);
+}
+
+.redirect-text {
+  font-size: 13px !important;
+  color: #888 !important;
+  margin-bottom: 0 !important;
+}
+
+@media (max-width: 600px) {
+  .payment-methods {
+    grid-template-columns: 1fr;
+  }
+}

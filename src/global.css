@@ -3,11 +3,12 @@
 
 /* ROOT VARIABLES */
 :root {
-  --primary: #8A7650;
-  --secondary: #8E977D;
-  --bg: #ECE7D1;
-  --accent: #DBCEA5;
-  --text: #2b2b2b;
+  --primary: #2F3324;
+  --secondary: #4A4D3E;
+  --bg: #F9F8F6;
+  --accent: #E3DFD0;
+  --text: #333333;
+  --light-text: #666666;
 }
 
 /* RESET */
