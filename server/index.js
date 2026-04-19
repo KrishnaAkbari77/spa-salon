@@ -8,6 +8,7 @@ import User from './models/User.js';
 import Appointment from './models/Appointment.js';
 import Staff from './models/Staff.js';
 import Message from './models/Message.js';
+import Feedback from './models/Feedback.js';
 
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
@@ -60,6 +61,15 @@ app.post('/users', async (req, res) => {
     const newUser = new User(req.body);
     const savedUser = await newUser.save();
     res.json(savedUser);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/users/:id', async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Deleted successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -155,6 +165,40 @@ app.patch('/messages/:id', async (req, res) => {
   try {
     const updatedMessage = await Message.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(updatedMessage);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Feedbacks
+app.get('/feedbacks', async (req, res) => {
+  try {
+    const { userId, status } = req.query;
+    let query = {};
+    if (userId) query.userId = userId;
+    if (status) query.status = status;
+    
+    const feedbacks = await Feedback.find(query);
+    res.json(feedbacks);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/feedbacks', async (req, res) => {
+  try {
+    const newFeedback = new Feedback(req.body);
+    const savedFeedback = await newFeedback.save();
+    res.json(savedFeedback);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.patch('/feedbacks/:id', async (req, res) => {
+  try {
+    const updatedFeedback = await Feedback.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updatedFeedback);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Offers.css";
 
 const Offers = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -110,7 +112,7 @@ const Offers = () => {
           <div className="enquire-content">
             <h2>Flat 30% off on your first visit</h2>
             <p>*at select locations *t&c apply</p>
-            <button className="btn-enquire">BOOK AN APPOINTMENT</button>
+            <button className="btn-enquire" onClick={() => navigate("/book")}>BOOK AN APPOINTMENT</button>
           </div>
         </div>
       </section>

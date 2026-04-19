@@ -9,6 +9,8 @@ const User = () => {
   const navigate = useNavigate();
   const [appointments, setAppointments] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [newFeedbackText, setNewFeedbackText] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -32,6 +34,11 @@ const User = () => {
         const msgData = await msgRes.json();
         msgData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setMessages(msgData);
+
+        const fbRes = await fetch(`http://localhost:3001/feedbacks?userId=${user.id}`);
+        const fbData = await fbRes.json();
+        fbData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setFeedbacks(fbData);
       } catch (err) {
         console.error("Error fetching user data.", err);
       } finally {
@@ -57,6 +64,31 @@ const User = () => {
       setMessages(messages.map(m => m.id === id ? { ...m, read: true } : m));
     } catch(err) { 
       console.error(err); 
+    }
+  };
+
+  const handleSubmitFeedback = async (e) => {
+    e.preventDefault();
+    if(!newFeedbackText.trim()) return;
+
+    try {
+      const fbData = {
+        userId: user.id || user._id || 'unknown',
+        userName: user.name || 'User',
+        text: newFeedbackText
+      };
+      
+      const res = await fetch("http://localhost:3001/feedbacks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fbData)
+      });
+      const addedFb = await res.json();
+      setFeedbacks([addedFb, ...feedbacks]);
+      setNewFeedbackText("");
+      alert("Feedback submitted successfully! Waiting for admin approval.");
+    } catch (err) {
+      console.error("Failed to submit feedback", err);
     }
   };
 
@@ -165,6 +197,38 @@ const User = () => {
           </div>
         ) : (
           <div className="empty-state">No past appointments.</div>
+        )}
+      </div>
+
+      <div className="feedback-section mt-40 card">
+        <h3>My Feedbacks</h3>
+        
+        <form className="feedback-form" onSubmit={handleSubmitFeedback}>
+          <textarea 
+            placeholder="Share your experience with us..." 
+            value={newFeedbackText} 
+            onChange={(e) => setNewFeedbackText(e.target.value)}
+            rows={3}
+            required
+          ></textarea>
+          <button type="submit" className="btn-submit-feedback">Submit Feedback</button>
+        </form>
+
+        {feedbacks.length > 0 && (
+          <div className="feedback-history mt-20">
+            <h4>Feedback History</h4>
+            <div className="feedback-list">
+              {feedbacks.map(fb => (
+                <div key={fb.id} className={`feedback-item ${fb.status}`}>
+                  <div className="fb-header">
+                    <span className="fb-date">{new Date(fb.createdAt).toLocaleDateString()}</span>
+                    <span className={`status-badge ${fb.status}`}>{fb.status}</span>
+                  </div>
+                  <p className="fb-text">"{fb.text}"</p>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
 

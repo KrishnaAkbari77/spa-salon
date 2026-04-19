@@ -74,10 +74,11 @@
 }
 
 .btn-nav-book:hover {
-  background-color: currentColor;
-  color: #2F3324;
+  background-color: #fff;
+  color: #2F3324 !important;
 }
 
 .navbar:not(.scrolled) .btn-nav-book:hover {
-  color: #000;
+  background-color: #fff;
+  color: #000 !important;
 }

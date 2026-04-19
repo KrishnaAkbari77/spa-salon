@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Home.css";
 import { Link } from "react-router-dom";
 
@@ -9,6 +9,21 @@ import service3 from "../assets/image2.jpg";
 import service4 from "../assets/1.webp";
 
 const Home = () => {
+  const [approvedFeedbacks, setApprovedFeedbacks] = useState([]);
+
+  useEffect(() => {
+    const fetchFeedbacks = async () => {
+      try {
+        const res = await fetch("http://localhost:3001/feedbacks?status=approved");
+        const data = await res.json();
+        setApprovedFeedbacks(data);
+      } catch (error) {
+        console.error("Failed to fetch feedbacks", error);
+      }
+    };
+    fetchFeedbacks();
+  }, []);
+
   return (
     <div className="home">
       {/* HERO SECTION */}
@@ -132,18 +147,29 @@ const Home = () => {
       <section className="testimonials container">
         <h2>Our Client <em>Testimonial</em></h2>
         <div className="testimonial-grid">
-          <div className="testimonial">
-            <p className="quote">"I had a fantastic experience. The staff is so welcoming and the massage was the best I've ever had. Highly recommend to everyone looking for a relaxing day!"</p>
-            <div className="author">- Jane Doe</div>
-          </div>
-          <div className="testimonial">
-            <p className="quote">"Beautiful ambiance, excellent service. I left feeling completely rejuvenated. The hot stone massage is an absolute must-try."</p>
-            <div className="author">- Sarah Smith</div>
-          </div>
-          <div className="testimonial">
-            <p className="quote">"The facial treatment was divine. The esthetician was very knowledgeable and used high-quality products. My skin is glowing!"</p>
-            <div className="author">- Emily Rose</div>
-          </div>
+          {approvedFeedbacks.length > 0 ? (
+            approvedFeedbacks.slice(0, 3).map(fb => (
+              <div key={fb.id} className="testimonial">
+                <p className="quote">"{fb.text}"</p>
+                <div className="author">- {fb.userName}</div>
+              </div>
+            ))
+          ) : (
+            <>
+              <div className="testimonial">
+                <p className="quote">"I had a fantastic experience. The staff is so welcoming and the massage was the best I've ever had. Highly recommend to everyone looking for a relaxing day!"</p>
+                <div className="author">- Jane Doe</div>
+              </div>
+              <div className="testimonial">
+                <p className="quote">"Beautiful ambiance, excellent service. I left feeling completely rejuvenated. The hot stone massage is an absolute must-try."</p>
+                <div className="author">- Sarah Smith</div>
+              </div>
+              <div className="testimonial">
+                <p className="quote">"The facial treatment was divine. The esthetician was very knowledgeable and used high-quality products. My skin is glowing!"</p>
+                <div className="author">- Emily Rose</div>
+              </div>
+            </>
+          )}
         </div>
       </section>
 
