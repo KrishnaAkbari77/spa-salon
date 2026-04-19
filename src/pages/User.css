@@ -13,12 +13,12 @@
   background: #fff;
   padding: 40px;
   border-radius: 20px;
-  box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
 }
 
 .profile-icon {
   color: var(--primary);
-  background: rgba(47, 51, 36, 0.05);
+  background: #fff;
   border-radius: 50%;
 }
 
@@ -64,14 +64,14 @@
   background: #fff;
   border-radius: 15px;
   padding: 25px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
   transition: transform 0.3s ease;
   border: 1px solid transparent;
 }
 
 .appointment-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
 }
 
 .appointment-card.past {
@@ -81,7 +81,7 @@
 
 .appointment-card.past:hover {
   transform: none;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
 }
 
 .appt-header {
@@ -157,7 +157,7 @@
   max-width: 500px;
   background: #fff;
   border-radius: 20px;
-  box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
 }
 
 .error-state h2 {
@@ -186,7 +186,7 @@
     text-align: center;
     gap: 20px;
   }
-  
+
   .contact-info {
     justify-content: center;
   }

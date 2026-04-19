@@ -2,12 +2,11 @@ import React from "react";
 import "./Home.css";
 import { Link } from "react-router-dom";
 
-// Assume we have these or we'll use placeholders
-const heroImg = "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=2000&q=80";
-const service1 = "https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60";
-const service2 = "https://images.unsplash.com/photo-1552693673-1bf958298935?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60";
-const service3 = "https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60";
-const service4 = "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60";
+import heroImg from "../assets/banner.jpg";
+import service1 from "../assets/services.png";
+import service2 from "../assets/image1.jpg";
+import service3 from "../assets/image2.jpg";
+import service4 from "../assets/1.webp";
 
 const Home = () => {
   return (
@@ -15,7 +14,7 @@ const Home = () => {
       {/* HERO SECTION */}
       <section className="hero" style={{ backgroundImage: `url(${heroImg})` }}>
         <div className="hero-content">
-          <h1 className="hero-title">Restore Body<br/>And Mind</h1>
+          <h1 className="hero-title">Restore Body<br />And Mind</h1>
           <p className="hero-subtitle">Holistic therapies to renew your mind, body and spirit. Discover our range of treatments tailored to your unique needs.</p>
           <Link to="/book" className="btn-book-now">BOOK APPOINTMENT</Link>
         </div>
@@ -38,7 +37,7 @@ const Home = () => {
           <h2>Our Top <em>Services</em></h2>
           <p>Our experienced team provides a full range of spa treatments designed to leave you feeling relaxed and rejuvenated.</p>
         </div>
-        
+
         <div className="services-grid-round">
           <div className="service-round">
             <div className="img-wrapper"><img src={service1} alt="Spa" /></div>

@@ -1,63 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Specialists.css";
 
-const specialistsData = [
-  {
-    id: 1,
-    role: "Hairstylist",
-    name: "Elena Rodriguez",
-    achievement: "Voted Top Stylist in the City, 2025. 10+ years specializing in modern coloring techniques and textured cuts.",
-    image: "/images/specialists/hairstylist.png",
-  },
-  {
-    id: 2,
-    role: "Hairdresser",
-    name: "Marcus Chen",
-    achievement: "Award-winning precision cutter. Featured in 'Vogue Hair Trends' and global platform educator.",
-    image: "/images/specialists/hairdresser.png",
-  },
-  {
-    id: 3,
-    role: "Beautician",
-    name: "Sarah Jenkins",
-    achievement: "Certified Master Esthetician with a focus on holistic skincare. Transformed over 500 clients' skin journeys.",
-    image: "/images/specialists/beautician.png",
-  },
-  {
-    id: 4,
-    role: "Makeup Artist",
-    name: "David Kim",
-    achievement: "Celebrity makeup artist with credits in major fashion weeks (NY & Paris). Specializes in bridal and editorial makeup.",
-    image: "/images/specialists/makeup_artist.png",
-  },
-  {
-    id: 5,
-    role: "Massage Therapist",
-    name: "Aisha Patel",
-    achievement: "Advanced certification in deep tissue and reflexology. 15 years of experience healing chronic tension.",
-    image: "/images/specialists/massage_therapist.png",
-  },
-  {
-    id: 6,
-    role: "Spa Therapist",
-    name: "Liam O'Connor",
-    achievement: "Pioneer in aromatherapy integration. Created signature relaxation protocols used across luxury wellness centers.",
-    image: "/images/specialists/spa_therapist.png",
-  },
-  {
-    id: 7,
-    role: "Beauty Therapist",
-    name: "Chloe Dupont",
-    achievement: "Expert in non-invasive anti-aging treatments. Holds the highest level of international CIDESCO diploma.",
-    image: "/images/specialists/beautician.png", // Reused since generation failed
-  },
-];
-
 const Specialists = () => {
+  const [specialistsData, setSpecialistsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    const fetchSpecialists = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/staff");
+        if (response.ok) {
+          const data = await response.json();
+          setSpecialistsData(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch specialists:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSpecialists();
   }, []);
+
+  if (loading) {
+    return <div className="specialists-page"><div className="intro-container"><h2>Loading Specialists...</h2></div></div>;
+  }
 
   return (
     <div className="specialists-page">
@@ -98,7 +67,11 @@ const Specialists = () => {
                   <h3>{specialist.name}</h3>
                   <div className="team-card-divider"></div>
                   <p className="team-card-achievement">{specialist.achievement}</p>
-                  <Link to={`/book?service=${encodeURIComponent(specialist.role)}`} className="btn-book-specialist">
+                  {/* Pass specialistId and pre-select the matching service */}
+                  <Link
+                    to={`/book?service=${encodeURIComponent(specialist.serviceKey)}&specialistId=${specialist.id}`}
+                    className="btn-book-specialist"
+                  >
                     Book with {specialist.name.split(" ")[0]}
                   </Link>
                 </div>
@@ -107,7 +80,7 @@ const Specialists = () => {
           </div>
         </div>
       </section>
-      
+
       {/* Call to Action */}
       <section className="specialists-cta">
         <div className="cta-content">

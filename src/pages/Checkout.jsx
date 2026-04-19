@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, CheckCircle, CreditCard, Landmark } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 import "./Checkout.css";
+import checkoutImg from "../assets/1.webp";
 
 const loadScript = (src) => {
   return new Promise((resolve) => {
@@ -31,7 +32,7 @@ const Checkout = () => {
     address: "",
     date: "2026-05-01",
     time: "10:00 AM",
-    price: "$40"
+    price: "₹40"
   };
 
   const [paymentMethod, setPaymentMethod] = useState("razorpay");
@@ -76,7 +77,7 @@ const Checkout = () => {
       return;
     }
 
-    // Extract numerical value from price string (e.g. "$40" -> 40)
+    // Extract numerical value from price string (e.g. "₹40" -> 40)
     const numericPrice = bookingDetails.price.replace(/[^0-9]/g, '');
     const amountInCurrency = numericPrice ? parseInt(numericPrice, 10) * 80 : 500; // Mock conversion
 
@@ -100,7 +101,7 @@ const Checkout = () => {
         currency: order.currency,
         name: "aura Spa & Salon",
         description: `Payment for ${bookingDetails.service}`,
-        image: "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=100&q=80",
+        image: window.location.origin + checkoutImg,
         order_id: order.id,
         handler: async function (response) {
           try {

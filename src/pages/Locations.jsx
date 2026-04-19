@@ -3,14 +3,22 @@ import "./Locations.css";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 
+import img1 from "../assets/newyork.jpg";
+import img2 from "../assets/manhatten.jpg";
+import img3 from "../assets/boston.jpg";
+import img4 from "../assets/la.jpg";
+import img5 from "../assets/seoul.jpg";
+import img6 from "../assets/mumbai.jpg";
+import img7 from "../assets/tokyo.jpg";
+
 const locations = [
-  { city: "New York", address: "123 Broadway, NY 10001", phone: "+1 212-555-0100", img: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=600&q=80" },
-  { city: "Manhattan", address: "456 5th Ave, NY 10018", phone: "+1 212-555-0101", img: "https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=600&q=80" },
-  { city: "Boston", address: "789 Boylston St, MA 02116", phone: "+1 617-555-0102", img: "https://images.unsplash.com/photo-1506527581691-030a2139e80e?auto=format&fit=crop&w=600&q=80" },
-  { city: "Los Angeles", address: "101 Hollywood Blvd, CA 90028", phone: "+1 323-555-0103", img: "https://images.unsplash.com/photo-1580659324422-cb02082f05a3?auto=format&fit=crop&w=600&q=80" },
-  { city: "Seoul", address: "123 Gangnam-daero, Seoul 06611", phone: "+82 2-555-0104", img: "https://images.unsplash.com/photo-1588506161499-1bd1713e2f47?auto=format&fit=crop&w=600&q=80" },
-  { city: "Mumbai", address: "456 Marine Drive, MH 400020", phone: "+91 22-5555-0105", img: "https://images.unsplash.com/photo-1529253355930-ddbe423a2ac7?auto=format&fit=crop&w=600&q=80" },
-  { city: "Tokyo", address: "789 Shibuya, Tokyo 150-0002", phone: "+81 3-5555-0106", img: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=600&q=80" },
+  { city: "New York", address: "123 Broadway, NY 10001", phone: "+1 212-555-0100", img: img1 },
+  { city: "Manhattan", address: "456 5th Ave, NY 10018", phone: "+1 212-555-0101", img: img2 },
+  { city: "Boston", address: "789 Boylston St, MA 02116", phone: "+1 617-555-0102", img: img3 },
+  { city: "Los Angeles", address: "101 Hollywood Blvd, CA 90028", phone: "+1 323-555-0103", img: img4 },
+  { city: "Seoul", address: "123 Gangnam-daero, Seoul 06611", phone: "+82 2-555-0104", img: img5 },
+  { city: "Mumbai", address: "456 Marine Drive, MH 400020", phone: "+91 22-5555-0105", img: img6 },
+  { city: "Tokyo", address: "789 Shibuya, Tokyo 150-0002", phone: "+81 3-5555-0106", img: img7 },
 ];
 
 const Locations = () => {
