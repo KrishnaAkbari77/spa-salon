@@ -213,7 +213,7 @@ app.listen(PORT, () => {
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_Sespjc2xXLVyJx',
   key_secret: process.env.RAZORPAY_KEY_SECRET || '30FXhXAHVY6PSGyKPDmbNETY',
-});
+}); 
 
 // Payment Endpoints
 app.post('/payment/orders', async (req, res) => {
