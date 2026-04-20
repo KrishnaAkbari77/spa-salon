@@ -6,9 +6,13 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-col">
-          <Link to="/" className="footer-logo">aura</Link>
+          <Link to="/" className="footer-logo">
+            aura
+          </Link>
           <p className="footer-desc">
-            aura is a holistic wellness center that offers a wide range of services to help you relax, rejuvenate, and restore your body and mind.
+            aura is a holistic wellness center that offers a wide range of
+            services to help you relax, rejuvenate, and restore your body and
+            mind.
           </p>
           <div className="socials">
             <a href="#">FB</a>
@@ -32,9 +36,11 @@ const Footer = () => {
           <p>+1 (555) 123-4567</p>
         </div>
       </div>
-      
+
       <div className="footer-bottom">
-        <p className="copyright">© {new Date().getFullYear()} Aura Wellness. All Rights Reserved.</p>
+        <p className="copyright">
+          © {new Date().getFullYear()} Aura Wellness. All Rights Reserved.
+        </p>
       </div>
     </footer>
   );

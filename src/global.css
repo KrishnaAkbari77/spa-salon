@@ -1,12 +1,12 @@
 /* GOOGLE FONTS */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap");
 
 /* ROOT VARIABLES */
 :root {
-  --primary: #2F3324;
-  --secondary: #4A4D3E;
-  --bg: #F9F8F6;
-  --accent: #E3DFD0;
+  --primary: #2f3324;
+  --secondary: #4a4d3e;
+  --bg: #f9f8f6;
+  --accent: #e3dfd0;
   --text: #333333;
   --light-text: #666666;
 }
@@ -20,15 +20,18 @@
 
 /* BODY */
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: var(--bg);
   color: var(--text);
   line-height: 1.6;
 }
 
 /* HEADINGS (Luxury feel) */
-h1, h2, h3, h4 {
-  font-family: 'Playfair Display', serif;
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Playfair Display", serif;
   color: var(--primary);
 }
 
@@ -40,7 +43,7 @@ a {
 
 /* BUTTONS */
 button {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -99,7 +102,7 @@ img:hover {
 }
 
 .card:hover {
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transform: translateY(-5px);
 }
 

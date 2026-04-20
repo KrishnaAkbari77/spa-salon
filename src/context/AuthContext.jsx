@@ -1,25 +1,22 @@
-import React, { createContext, useState, useEffect } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import React, { createContext, useState } from "react";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  // Check localStorage on initial load
-  useEffect(() => {
+  const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("spa_user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
-  }, []);
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  const [loading] = useState(false);
 
   const login = async (email, password) => {
     try {
-      const res = await fetch(`http://localhost:3001/users?email=${email}&password=${password}`);
+      const res = await fetch(
+        `http://localhost:3001/users?email=${email}&password=${password}`,
+      );
       const data = await res.json();
-      
+
       if (data.length > 0) {
         const loggedInUser = data[0];
         setUser(loggedInUser);
@@ -37,9 +34,11 @@ export const AuthProvider = ({ children }) => {
   const register = async (name, email, phone, password) => {
     try {
       // First check if user exists
-      const checkRes = await fetch(`http://localhost:3001/users?email=${email}`);
+      const checkRes = await fetch(
+        `http://localhost:3001/users?email=${email}`,
+      );
       const existingUsers = await checkRes.json();
-      
+
       if (existingUsers.length > 0) {
         return { success: false, message: "Email already exists" };
       }
@@ -50,7 +49,7 @@ export const AuthProvider = ({ children }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, phone, password }),
       });
-      
+
       const newUser = await res.json();
       setUser(newUser);
       localStorage.setItem("spa_user", JSON.stringify(newUser));

@@ -82,7 +82,7 @@
   background: white;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
   border: 1px solid #eee;
 }
 .stat-card h4 {
@@ -121,7 +121,7 @@
   margin-bottom: 20px;
 }
 .btn-add-appt {
-  background: #2E8B57; /* Similar to the green in the example image */
+  background: #2e8b57; /* Similar to the green in the example image */
   color: white;
   border: none;
   padding: 10px 16px;
@@ -279,7 +279,8 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   padding: 15px;
   text-align: left;
   border-bottom: 1px solid #eee;
@@ -299,14 +300,33 @@ th {
   text-transform: capitalize;
 }
 
-.status.upcoming { background: #e3f2fd; color: #1976d2; }
-.status.completed { background: #e8f5e9; color: #2e7d32; }
-.status.cancelled { background: #ffebee; color: #c62828; }
-.status.pending { background: #fff3e0; color: #e65100; }
-.status.approved { background: #e8f5e9; color: #2e7d32; }
-.status.rejected { background: #ffebee; color: #c62828; }
+.status.upcoming {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+.status.completed {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+.status.cancelled {
+  background: #ffebee;
+  color: #c62828;
+}
+.status.pending {
+  background: #fff3e0;
+  color: #e65100;
+}
+.status.approved {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+.status.rejected {
+  background: #ffebee;
+  color: #c62828;
+}
 
-.btn-reschedule, .btn-delete {
+.btn-reschedule,
+.btn-delete {
   background: none;
   border: none;
   cursor: pointer;
@@ -316,8 +336,12 @@ th {
   font-weight: 500;
 }
 
-.btn-reschedule { color: var(--primary); }
-.btn-delete { color: #c62828; }
+.btn-reschedule {
+  color: var(--primary);
+}
+.btn-delete {
+  color: #c62828;
+}
 
 .add-staff-form {
   background: #f9f9f9;
@@ -332,7 +356,8 @@ th {
   margin-top: 15px;
 }
 
-.form-row input, .form-row select {
+.form-row input,
+.form-row select {
   flex: 1;
   padding: 10px 15px;
   border: 1px solid #ddd;
@@ -348,13 +373,18 @@ th {
   cursor: pointer;
 }
 
-.mt-30 { margin-top: 30px; }
+.mt-30 {
+  margin-top: 30px;
+}
 
 /* Modals */
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -391,7 +421,8 @@ th {
   font-weight: 500;
 }
 
-.form-group input, .form-group select {
+.form-group input,
+.form-group select {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;

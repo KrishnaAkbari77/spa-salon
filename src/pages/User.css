@@ -253,18 +253,26 @@
   padding: 20px;
   border-radius: 12px;
   border-left: 4px solid #ccc;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
 }
 
 .feedback-item:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
 }
 
-.feedback-item.pending { border-left-color: #ff9800; }
-.feedback-item.approved { border-left-color: #4caf50; }
-.feedback-item.rejected { border-left-color: #f44336; }
+.feedback-item.pending {
+  border-left-color: #ff9800;
+}
+.feedback-item.approved {
+  border-left-color: #4caf50;
+}
+.feedback-item.rejected {
+  border-left-color: #f44336;
+}
 
 .fb-header {
   display: flex;

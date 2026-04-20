@@ -9,11 +9,14 @@
   padding: 20px 0;
   color: white;
   z-index: 1000;
-  transition: background-color 0.3s ease, padding 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    padding 0.3s ease,
+    color 0.3s ease;
 }
 
 .navbar.scrolled {
-  background-color: #2F3324;
+  background-color: #2f3324;
   padding: 15px 0;
   color: #fff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -30,7 +33,7 @@
 
 /* LOGO */
 .logo {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: 28px;
   font-weight: 500;
   text-decoration: none;
@@ -75,7 +78,7 @@
 
 .btn-nav-book:hover {
   background-color: #fff;
-  color: #2F3324 !important;
+  color: #2f3324 !important;
 }
 
 .navbar:not(.scrolled) .btn-nav-book:hover {

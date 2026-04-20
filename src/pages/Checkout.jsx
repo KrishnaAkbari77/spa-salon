@@ -23,7 +23,7 @@ const Checkout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-  
+
   // Provide fallback details for direct navigation/testing
   const bookingDetails = location.state || {
     service: "Sample Spa Service",
@@ -32,7 +32,7 @@ const Checkout = () => {
     address: "",
     date: "2026-05-01",
     time: "10:00 AM",
-    price: "₹40"
+    price: "₹40",
   };
 
   const [paymentMethod, setPaymentMethod] = useState("razorpay");
@@ -55,13 +55,13 @@ const Checkout = () => {
         time: bookingDetails.time,
         price: bookingDetails.price,
         paymentMethod: paymentMethod,
-        status: "upcoming"
+        status: "upcoming",
       };
 
       await fetch("http://localhost:3001/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newAppointment)
+        body: JSON.stringify(newAppointment),
       });
     } catch (err) {
       console.error("Failed to save booking to database", err);
@@ -69,7 +69,9 @@ const Checkout = () => {
   };
 
   const displayRazorpay = async () => {
-    const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+    const res = await loadScript(
+      "https://checkout.razorpay.com/v1/checkout.js",
+    );
 
     if (!res) {
       alert("Razorpay SDK failed to load. Please check your connection.");
@@ -78,15 +80,17 @@ const Checkout = () => {
     }
 
     // Extract numerical value from price string (e.g. "₹40" -> 40)
-    const numericPrice = bookingDetails.price.replace(/[^0-9]/g, '');
-    const amountInCurrency = numericPrice ? parseInt(numericPrice, 10) * 80 : 500; // Mock conversion
+    const numericPrice = bookingDetails.price.replace(/[^0-9]/g, "");
+    const amountInCurrency = numericPrice
+      ? parseInt(numericPrice, 10) * 80
+      : 500; // Mock conversion
 
     try {
       // Step 1: Create Order from backend
       const result = await fetch("http://localhost:3001/payment/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: amountInCurrency, currency: "INR" })
+        body: JSON.stringify({ amount: amountInCurrency, currency: "INR" }),
       });
 
       if (!result.ok) {
@@ -106,15 +110,18 @@ const Checkout = () => {
         handler: async function (response) {
           try {
             // Step 2: Verify Payment
-            const verifyResult = await fetch("http://localhost:3001/payment/verify", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-              })
-            });
+            const verifyResult = await fetch(
+              "http://localhost:3001/payment/verify",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                }),
+              },
+            );
 
             if (verifyResult.ok) {
               await saveBookingToDB();
@@ -149,7 +156,6 @@ const Checkout = () => {
         setIsProcessing(false);
       });
       paymentObject.open();
-
     } catch (error) {
       console.error(error);
       alert("Something went wrong with the payment gateway.");
@@ -176,7 +182,7 @@ const Checkout = () => {
         setIsProcessing(false);
         await saveBookingToDB();
         setIsSuccess(true);
-        
+
         // Redirect to user profile after 3 seconds
         setTimeout(() => {
           navigate("/user");
@@ -191,11 +197,20 @@ const Checkout = () => {
         <div className="success-card">
           <CheckCircle size={80} color="#2F3324" />
           <h2>Booking Confirmed!</h2>
-          <p>Your appointment for <strong>{bookingDetails.service}</strong> is set.</p>
+          <p>
+            Your appointment for <strong>{bookingDetails.service}</strong> is
+            set.
+          </p>
           <div className="success-details">
-            <p><strong>Date:</strong> {bookingDetails.date}</p>
-            <p><strong>Time:</strong> {bookingDetails.time}</p>
-            <p><strong>Location:</strong> {bookingDetails.place}</p>
+            <p>
+              <strong>Date:</strong> {bookingDetails.date}
+            </p>
+            <p>
+              <strong>Time:</strong> {bookingDetails.time}
+            </p>
+            <p>
+              <strong>Location:</strong> {bookingDetails.place}
+            </p>
           </div>
           <p className="redirect-text">Redirecting to profile...</p>
         </div>
@@ -206,9 +221,12 @@ const Checkout = () => {
   return (
     <div className="checkout-page">
       <div className="checkout-container">
-        
         <div className="checkout-header">
-          <button type="button" className="back-btn" onClick={() => navigate(-1)}>
+          <button
+            type="button"
+            className="back-btn"
+            onClick={() => navigate(-1)}
+          >
             <ArrowLeft size={24} />
           </button>
           <h2>Checkout</h2>
@@ -230,11 +248,16 @@ const Checkout = () => {
             )}
             <div className="summary-item">
               <span>Date & Time</span>
-              <span>{bookingDetails.date} at {bookingDetails.time}</span>
+              <span>
+                {bookingDetails.date} at {bookingDetails.time}
+              </span>
             </div>
             <div className="summary-item">
               <span>Location</span>
-              <span className="right-align">{bookingDetails.place} {bookingDetails.address ? `(${bookingDetails.address})` : ''}</span>
+              <span className="right-align">
+                {bookingDetails.place}{" "}
+                {bookingDetails.address ? `(${bookingDetails.address})` : ""}
+              </span>
             </div>
             <div className="summary-total">
               <span>Total Amount</span>
@@ -244,42 +267,53 @@ const Checkout = () => {
 
           <form onSubmit={handlePayment} className="payment-form card">
             <h3>Select Payment Method</h3>
-            
-            <div className="payment-methods" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
-              <div 
-                className={`method-box ${paymentMethod === 'razorpay' ? 'selected' : ''}`}
-                onClick={() => setPaymentMethod('razorpay')}
+
+            <div
+              className="payment-methods"
+              style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
+            >
+              <div
+                className={`method-box ${paymentMethod === "razorpay" ? "selected" : ""}`}
+                onClick={() => setPaymentMethod("razorpay")}
               >
                 <CreditCard size={24} />
                 <span>Razorpay</span>
               </div>
-              <div 
-                className={`method-box ${paymentMethod === 'cod' ? 'selected' : ''}`}
-                onClick={() => setPaymentMethod('cod')}
+              <div
+                className={`method-box ${paymentMethod === "cod" ? "selected" : ""}`}
+                onClick={() => setPaymentMethod("cod")}
               >
                 <Landmark size={24} />
                 <span>Cash on Delivery</span>
               </div>
             </div>
 
-            {paymentMethod === 'razorpay' && (
+            {paymentMethod === "razorpay" && (
               <div className="paypal-details slide-down">
-                <p>You will be securely redirected to Razorpay to complete your purchase.</p>
+                <p>
+                  You will be securely redirected to Razorpay to complete your
+                  purchase.
+                </p>
               </div>
             )}
 
-            {paymentMethod === 'cod' && (
+            {paymentMethod === "cod" && (
               <div className="salon-details slide-down">
-                <p>Your appointment will be booked. You can pay via cash when you arrive or upon service completion.</p>
+                <p>
+                  Your appointment will be booked. You can pay via cash when you
+                  arrive or upon service completion.
+                </p>
               </div>
             )}
 
-            <button 
-              type="submit" 
-              className={`btn-pay-now ${isProcessing ? 'processing' : ''}`}
+            <button
+              type="submit"
+              className={`btn-pay-now ${isProcessing ? "processing" : ""}`}
               disabled={isProcessing}
             >
-              {isProcessing ? 'Processing...' : `Pay ${paymentMethod === 'cod' ? 'Later' : bookingDetails.price}`}
+              {isProcessing
+                ? "Processing..."
+                : `Pay ${paymentMethod === "cod" ? "Later" : bookingDetails.price}`}
             </button>
           </form>
         </div>

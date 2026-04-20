@@ -17,10 +17,13 @@
 }
 
 .hero::after {
-  content: '';
+  content: "";
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.3);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
   z-index: 1;
 }
 
@@ -96,7 +99,7 @@
 .about-right h3 {
   font-size: 26px;
   line-height: 1.6;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 400;
   color: var(--text);
 }
@@ -152,7 +155,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease, filter 0.4s ease;
+  transition:
+    transform 0.4s ease,
+    filter 0.4s ease;
 }
 
 .service-round:hover img {
@@ -161,7 +166,7 @@
 }
 
 .service-round h4 {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 1px;
@@ -248,12 +253,14 @@
   width: 100%;
   border-radius: 20px;
   object-fit: cover;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
 .gallery-col img:hover {
   transform: scale(1.03);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
 .gallery-col.col-1 img {
@@ -289,7 +296,7 @@
 /* PRICING & AROMATHERAPY */
 .pricing-aroma {
   padding: 100px 5%;
-  background: #EAEAE4;
+  background: #eaeae4;
 }
 
 .pricing-grid {
@@ -302,7 +309,7 @@
 .pricing-box h4 {
   font-size: 18px;
   margin-bottom: 15px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
 }
 
@@ -339,7 +346,7 @@
 }
 
 .accordion-item {
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 20px 0;
 }
 
@@ -393,7 +400,7 @@
 /* BOOK CTA */
 .book-cta {
   padding: 100px 5%;
-  background: #FAF9F6;
+  background: #faf9f6;
 }
 
 .book-cta-wrapper {
@@ -401,7 +408,7 @@
   background: #fff;
   border-radius: 30px;
   overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
 }
 
 .book-form {
@@ -420,12 +427,14 @@
   margin-bottom: 20px;
 }
 
-.form-group input, .form-group select, .book-form textarea {
+.form-group input,
+.form-group select,
+.book-form textarea {
   flex: 1;
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 10px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 14px;
 }
 
@@ -465,7 +474,14 @@
 }
 
 @media (max-width: 900px) {
-  .about-section, .wellness-care, .gallery-grid, .pricing-grid, .aroma-section, .testimonial-grid, .book-cta-wrapper, .form-group {
+  .about-section,
+  .wellness-care,
+  .gallery-grid,
+  .pricing-grid,
+  .aroma-section,
+  .testimonial-grid,
+  .book-cta-wrapper,
+  .form-group {
     flex-direction: column;
     grid-template-columns: 1fr;
   }

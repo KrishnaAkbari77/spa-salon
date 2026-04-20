@@ -20,7 +20,7 @@
 }
 
 .footer-logo {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: 32px;
   color: #fff;
   text-decoration: none;
@@ -35,7 +35,7 @@
 }
 
 .footer-col h4 {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #fff;
   font-size: 16px;
   font-weight: 500;
@@ -44,7 +44,8 @@
   letter-spacing: 1px;
 }
 
-.footer-col a, .footer-col p {
+.footer-col a,
+.footer-col p {
   color: #bbb;
   text-decoration: none;
   font-size: 14px;
