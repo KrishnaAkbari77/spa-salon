@@ -1,16 +1,16 @@
 const getApiUrl = () => {
-  // If an environment variable is explicitly provided, use it
+  // 1. If an environment variable is explicitly provided, use it
   if (import.meta.env.VITE_API_URL) {
     return import.meta.env.VITE_API_URL;
   }
   
-  // In development, point to the local server
+  // 2. In local development, point to the local server port
   if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-    return "http://localhost:3002";
+    return "http://localhost:3000";
   }
   
-  // In production, fallback to current origin where backend is served
-  return window.location.origin;
+  // 3. In production (Netlify), default to your Render backend URL
+  return "https://spa-salon-d24l.onrender.com";
 };
 
 export const API_URL = getApiUrl();
