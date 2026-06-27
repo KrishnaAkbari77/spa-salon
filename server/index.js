@@ -53,7 +53,7 @@ app.use((err, req, res, next) => {
 });
 
 // MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/spasalon";
+const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI || "mongodb://localhost:27017/spasalon";
 mongoose
   .connect(MONGODB_URI)
   .then(async () => {
