@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { MessageSquare, X, Send, Sparkles, AlertCircle } from "lucide-react";
+import { API_URL } from "../config";
 import "./Chatbot.css";
 
 const Chatbot = () => {
@@ -37,14 +38,12 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      // Format history to match backend expectations
-      // We pass the last 10 messages to keep the context short and fast
       const history = updatedMessages.slice(0, -1).map((msg) => ({
         role: msg.role,
         content: msg.content,
       }));
 
-      const res = await fetch("http://localhost:3002/chat", {
+      const res = await fetch(`${API_URL}/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

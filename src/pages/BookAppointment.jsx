@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react";
+import { API_URL } from "../config";
 import "./BookAppointment.css";
 
 // ─── Component ──────────────────────────────────────────────────────────────
@@ -29,7 +30,7 @@ const BookAppointment = () => {
   useEffect(() => {
     const fetchStaff = async () => {
       try {
-        const res = await fetch("http://localhost:3002/staff");
+        const res = await fetch(`${API_URL}/staff`);
         if (res.ok) {
           const data = await res.json();
           setSpecialistsData(data);

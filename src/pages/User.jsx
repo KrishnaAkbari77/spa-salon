@@ -12,6 +12,7 @@ import {
   Bell,
 } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
+import { API_URL } from "../config";
 import "./User.css";
 
 const User = () => {
@@ -34,7 +35,7 @@ const User = () => {
     const fetchData = async () => {
       try {
         const apptRes = await fetch(
-          `http://localhost:3002/appointments?userId=${user.id}`,
+          `${API_URL}/appointments?userId=${user.id}`,
         );
         const apptData = await apptRes.json();
 
@@ -43,14 +44,14 @@ const User = () => {
         setAppointments(apptData);
 
         const msgRes = await fetch(
-          `http://localhost:3002/messages?userId=${user.id}`,
+          `${API_URL}/messages?userId=${user.id}`,
         );
         const msgData = await msgRes.json();
         msgData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setMessages(msgData);
 
         const fbRes = await fetch(
-          `http://localhost:3002/feedbacks?userId=${user.id}`,
+          `${API_URL}/feedbacks?userId=${user.id}`,
         );
         const fbData = await fbRes.json();
         fbData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -72,7 +73,7 @@ const User = () => {
 
   const markAsRead = async (id) => {
     try {
-      await fetch(`http://localhost:3002/messages/${id}`, {
+      await fetch(`${API_URL}/messages/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ read: true }),
@@ -96,7 +97,7 @@ const User = () => {
         text: newFeedbackText,
       };
 
-      const res = await fetch("http://localhost:3002/feedbacks", {
+      const res = await fetch(`${API_URL}/feedbacks`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(fbData),

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../config";
 import "./Specialists.css";
 
 const Specialists = () => {
@@ -10,7 +11,7 @@ const Specialists = () => {
     window.scrollTo(0, 0);
     const fetchSpecialists = async () => {
       try {
-        const response = await fetch("http://localhost:3002/staff");
+        const response = await fetch(`${API_URL}/staff`);
         if (response.ok) {
           const data = await response.json();
           setSpecialistsData(data);

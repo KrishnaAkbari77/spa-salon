@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState } from "react";
+import { API_URL } from "../config";
 
 export const AuthContext = createContext();
 
@@ -13,7 +14,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const res = await fetch(
-        `http://localhost:3002/users?email=${email}&password=${password}`,
+        `${API_URL}/users?email=${email}&password=${password}`,
       );
       const data = await res.json();
 
@@ -35,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     try {
       // First check if user exists
       const checkRes = await fetch(
-        `http://localhost:3002/users?email=${email}`,
+        `${API_URL}/users?email=${email}`,
       );
       const existingUsers = await checkRes.json();
 
@@ -44,7 +45,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       // Create user
-      const res = await fetch("http://localhost:3002/users", {
+      const res = await fetch(`${API_URL}/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, phone, password }),

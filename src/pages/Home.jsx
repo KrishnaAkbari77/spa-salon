@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Home.css";
 import { Link } from "react-router-dom";
+import { API_URL } from "../config";
 
 import heroImg from "../assets/banner.jpg";
 import service1 from "../assets/services.png";
@@ -15,7 +16,7 @@ const Home = () => {
     const fetchFeedbacks = async () => {
       try {
         const res = await fetch(
-          "http://localhost:3002/feedbacks?status=approved",
+          `${API_URL}/feedbacks?status=approved`,
         );
         const data = await res.json();
         setApprovedFeedbacks(data);

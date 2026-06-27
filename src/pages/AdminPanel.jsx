@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { Calendar as CalendarIcon, Users, Briefcase, Edit2, Trash2, X, LayoutDashboard, MessageSquare, Plus, Check } from "lucide-react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from "recharts";
+import { API_URL } from "../config";
 import "./AdminPanel.css";
 
 const SERVICES_LIST = [
@@ -63,18 +64,18 @@ const AdminPanel = () => {
 
   const fetchData = async () => {
     try {
-      const apptRes = await fetch("http://localhost:3002/appointments");
+      const apptRes = await fetch(`${API_URL}/appointments`);
       const apptData = await apptRes.json();
       apptData.sort((a, b) => new Date(b.date) - new Date(a.date));
       setAppointments(apptData);
 
-      const userRes = await fetch("http://localhost:3002/users");
+      const userRes = await fetch(`${API_URL}/users`);
       setUsers(await userRes.json());
 
-      const staffRes = await fetch("http://localhost:3002/staff");
+      const staffRes = await fetch(`${API_URL}/staff`);
       setStaff(await staffRes.json());
 
-      const feedbackRes = await fetch("http://localhost:3002/feedbacks");
+      const feedbackRes = await fetch(`${API_URL}/feedbacks`);
       const feedbackData = await feedbackRes.json();
       feedbackData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setFeedbacks(feedbackData);
@@ -105,7 +106,7 @@ const AdminPanel = () => {
 
     try {
       const updatedAppt = { ...selectedAppt, date: newDate, time: newTime, staffId: newStaffId };
-      await fetch(`http://localhost:3002/appointments/${selectedAppt.id}`, {
+      await fetch(`${API_URL}/appointments/${selectedAppt.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedAppt)
@@ -118,7 +119,7 @@ const AdminPanel = () => {
         createdAt: new Date().toISOString(),
         read: false
       };
-      await fetch("http://localhost:3002/messages", {
+      await fetch(`${API_URL}/messages`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(message)
@@ -145,7 +146,7 @@ const AdminPanel = () => {
       };
       
       console.log("Sending payload to server:", payload);
-      const res = await fetch("http://localhost:3002/appointments", {
+      const res = await fetch(`${API_URL}/appointments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
@@ -191,7 +192,7 @@ const AdminPanel = () => {
   const handleDeleteAppointment = async (id) => {
     if (!window.confirm("Are you sure you want to delete this appointment?")) return;
     try {
-      await fetch(`http://localhost:3002/appointments/${id}`, { method: "DELETE" });
+      await fetch(`${API_URL}/appointments/${id}`, { method: "DELETE" });
       fetchData();
     } catch (err) {
       console.error("Failed to delete appointment", err);
@@ -208,7 +209,7 @@ const AdminPanel = () => {
     e.preventDefault();
     if (!selectedStaff) return;
     try {
-      const res = await fetch(`http://localhost:3002/staff/${selectedStaff.id}`, {
+      const res = await fetch(`${API_URL}/staff/${selectedStaff.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editStaffData) // Only send the edited fields
@@ -231,7 +232,7 @@ const AdminPanel = () => {
   const handleAddStaff = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3002/staff", {
+      const res = await fetch(`${API_URL}/staff`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
@@ -269,7 +270,7 @@ const AdminPanel = () => {
   const handleDeleteStaff = async (id) => {
     if (!window.confirm("Are you sure you want to remove this staff member?")) return;
     try {
-      await fetch(`http://localhost:3002/staff/${id}`, { method: "DELETE" });
+      await fetch(`${API_URL}/staff/${id}`, { method: "DELETE" });
       fetchData();
     } catch (err) {
       console.error("Failed to delete staff", err);
@@ -279,7 +280,7 @@ const AdminPanel = () => {
   const handleDeleteUser = async (id) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     try {
-      await fetch(`http://localhost:3002/users/${id}`, { method: "DELETE" });
+      await fetch(`${API_URL}/users/${id}`, { method: "DELETE" });
       fetchData();
     } catch (err) {
       console.error("Failed to delete user", err);
@@ -288,7 +289,7 @@ const AdminPanel = () => {
 
   const handleUpdateFeedbackStatus = async (id, status) => {
     try {
-      await fetch(`http://localhost:3002/feedbacks/${id}`, {
+      await fetch(`${API_URL}/feedbacks/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status })

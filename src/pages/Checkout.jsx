@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, CheckCircle, CreditCard, Landmark } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
+import { API_URL } from "../config";
 import "./Checkout.css";
 import checkoutImg from "../assets/1.webp";
 
@@ -58,7 +59,7 @@ const Checkout = () => {
         status: "upcoming",
       };
 
-      await fetch("http://localhost:3002/appointments", {
+      await fetch(`${API_URL}/appointments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newAppointment),
@@ -87,7 +88,7 @@ const Checkout = () => {
 
     try {
       // Step 1: Create Order from backend
-      const result = await fetch("http://localhost:3002/payment/orders", {
+      const result = await fetch(`${API_URL}/payment/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount: amountInCurrency, currency: "INR" }),
@@ -111,7 +112,7 @@ const Checkout = () => {
           try {
             // Step 2: Verify Payment
             const verifyResult = await fetch(
-              "http://localhost:3002/payment/verify",
+              `${API_URL}/payment/verify`,
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

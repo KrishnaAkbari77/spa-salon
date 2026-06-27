@@ -14,6 +14,11 @@ import Feedback from "./models/Feedback.js";
 import Razorpay from "razorpay";
 import crypto from "crypto";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 
 console.log("========================================");
@@ -296,7 +301,7 @@ app.patch("/feedbacks/:id", async (req, res) => {
   }
 });
 
-const PORT = 3002;
+const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
   console.log("========================================");
   console.log(`Express server running on http://localhost:${PORT}`);
@@ -441,7 +446,14 @@ Guidelines:
     // Fall back to local rules if Gemini API fails during live call
     const reply = getLocalChatFallback(message);
     res.json({ reply, error: error.message });
-  }
+});
+
+// Serve static built files from client (Vite build)
+app.use(express.static(path.join(__dirname, "../dist")));
+
+// SPA Catch-all Route: redirect non-API client requests to the single-page application entry point
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist/index.html"));
 });
 
 // Helper for local keyword chat fallback
