@@ -5,11 +5,13 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dns from "dns";
 
-// Set DNS servers to Google's public DNS to bypass local router DNS resolution limits for MongoDB Atlas
-try {
-  dns.setServers(["8.8.8.8", "8.8.4.4"]);
-} catch (err) {
-  console.warn("Unable to set Google DNS servers:", err.message);
+// Set DNS servers to Google's public DNS only in local development to bypass router limitations
+if (!process.env.RENDER) {
+  try {
+    dns.setServers(["8.8.8.8", "8.8.4.4"]);
+  } catch (err) {
+    console.warn("Unable to set Google DNS servers:", err.message);
+  }
 }
 
 // Import Models
