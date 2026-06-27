@@ -15,7 +15,7 @@ const Offers = () => {
         <div className="offers-hero-content">
           <h1>Salon Benefits at aura</h1>
           <p className="voucher-text">Gift Voucher</p>
-          <p className="voucher-price">₹50.00</p>
+          <p className="voucher-price">₹4,675.50</p>
           <p className="voucher-sub">Perfect to try something new!</p>
         </div>
       </section>
@@ -66,51 +66,51 @@ const Offers = () => {
           <div className="package-card">
             <h3>Basic</h3>
             <p className="pay-text">Pay</p>
-            <h4>₹110</h4>
+            <h4>₹10,286</h4>
             <div className="package-details">
-              <p>Get service worth ₹135</p>
+              <p>Get service worth ₹12,624</p>
               <p>Benefit: 25% (6 months) Extra</p>
-              <p>Value: ₹27</p>
+              <p>Value: ₹2,525</p>
             </div>
           </div>
           <div className="package-card">
             <h3>Prime</h3>
             <p className="pay-text">Pay</p>
-            <h4>₹210</h4>
+            <h4>₹19,637</h4>
             <div className="package-details">
-              <p>Get service worth ₹275</p>
+              <p>Get service worth ₹25,715</p>
               <p>Benefit: 30% (10 months) Extra</p>
-              <p>Value: ₹65</p>
+              <p>Value: ₹6,078</p>
             </div>
           </div>
           <div className="package-card">
             <h3>Silver</h3>
             <p className="pay-text">Pay</p>
-            <h4>₹420</h4>
+            <h4>₹39,274</h4>
             <div className="package-details">
-              <p>Get service worth ₹567</p>
+              <p>Get service worth ₹53,019</p>
               <p>Benefit: 35% (12 months) Extra</p>
-              <p>Value: ₹147</p>
+              <p>Value: ₹13,746</p>
             </div>
           </div>
           <div className="package-card">
             <h3>Gold</h3>
             <p className="pay-text">Pay</p>
-            <h4>₹750</h4>
+            <h4>₹70,133</h4>
             <div className="package-details">
-              <p>Get service worth ₹1050</p>
+              <p>Get service worth ₹98,186</p>
               <p>Benefit: 40% (18 months) Extra</p>
-              <p>Value: ₹300</p>
+              <p>Value: ₹28,053</p>
             </div>
           </div>
           <div className="package-card">
             <h3>Platinum</h3>
             <p className="pay-text">Pay</p>
-            <h4>₹1,000</h4>
+            <h4>₹93,510</h4>
             <div className="package-details">
-              <p>Get service worth ₹1450</p>
+              <p>Get service worth ₹1,35,590</p>
               <p>Benefit: 45% (18 months) Extra</p>
-              <p>Value: ₹450</p>
+              <p>Value: ₹42,080</p>
             </div>
           </div>
         </div>

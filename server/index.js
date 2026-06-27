@@ -13,12 +13,29 @@ import Feedback from "./models/Feedback.js";
 
 import Razorpay from "razorpay";
 import crypto from "crypto";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+
+console.log("========================================");
+console.log("SERVER STARTING...");
+console.log("VERSION: 2.2 (Ultra Bypass Mode)");
+console.log("========================================");
 
 const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+// Error handling for JSON parsing/limit
+app.use((err, req, res, next) => {
+  if (err) {
+    console.error("Server Middleware Error:", err.message);
+    return res.status(err.status || 500).json({ error: err.message });
+  }
+  next();
+});
 
 // MongoDB Connection
 mongoose
@@ -40,6 +57,18 @@ mongoose
     }
   })
   .catch((err) => console.error("MongoDB connection error:", err));
+
+// Forcefully remove phone validation if it somehow persists
+if (Staff.schema.path('phone')) {
+  console.log("Removing persistent phone path...");
+  Staff.schema.path('phone').required(false);
+}
+console.log("Staff Model initialized. Fields:", Object.keys(Staff.schema.paths));
+
+// Forcefully remove userId validation for guest bookings if it persists
+if (Appointment.schema.path('userId')) {
+  Appointment.schema.path('userId').required(false);
+}
 
 // ================= API ROUTES =================
 
@@ -93,10 +122,13 @@ app.get("/appointments", async (req, res) => {
 
 app.post("/appointments", async (req, res) => {
   try {
+    console.log("Adding new appointment for:", req.body.userId || req.body.userName);
     const newAppointment = new Appointment(req.body);
     const savedAppt = await newAppointment.save();
+    console.log("Appointment saved successfully:", savedAppt.id);
     res.json(savedAppt);
   } catch (err) {
+    console.error("Error adding appointment:", err.message);
     res.status(500).json({ error: err.message });
   }
 });
@@ -114,6 +146,15 @@ app.put("/appointments/:id", async (req, res) => {
   }
 });
 
+app.delete("/appointments/:id", async (req, res) => {
+  try {
+    await Appointment.findByIdAndDelete(req.params.id);
+    res.json({ message: "Deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Staff
 app.get("/staff", async (req, res) => {
   try {
@@ -126,10 +167,47 @@ app.get("/staff", async (req, res) => {
 
 app.post("/staff", async (req, res) => {
   try {
-    const newStaff = new Staff(req.body);
-    const savedStaff = await newStaff.save();
-    res.json(savedStaff);
+    console.log("Adding new staff (Bypassing Mongoose Validation):", req.body.name);
+    
+    // Ensure id exists (following previous pattern)
+    const count = await mongoose.connection.db.collection('staffs').countDocuments();
+    const newDoc = { 
+      ...req.body, 
+      id: (count + 1).toString(),
+      createdAt: new Date()
+    };
+
+    const result = await mongoose.connection.db.collection('staffs').insertOne(newDoc);
+    console.log("Staff saved successfully via bypass:", result.insertedId);
+    res.json({ ...newDoc, _id: result.insertedId });
   } catch (err) {
+    console.error("Bypass Error adding staff:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put("/staff/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = { ...req.body };
+    
+    // Remove fields that shouldn't be updated or might cause issues
+    delete updateData._id;
+    delete updateData.id;
+
+    const updatedStaff = await Staff.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: true, runValidators: false }
+    );
+
+    if (!updatedStaff) {
+      return res.status(404).json({ error: "Staff member not found" });
+    }
+
+    res.json(updatedStaff);
+  } catch (err) {
+    console.error("Error updating staff:", err.message);
     res.status(500).json({ error: err.message });
   }
 });
@@ -218,9 +296,12 @@ app.patch("/feedbacks/:id", async (req, res) => {
   }
 });
 
-const PORT = 3001;
+const PORT = 3002;
 app.listen(PORT, () => {
+  console.log("========================================");
   console.log(`Express server running on http://localhost:${PORT}`);
+  console.log("SERVER VERSION: 2.2 (Ultra Bypass Mode)");
+  console.log("========================================");
 });
 
 // Razorpay Integration
@@ -272,3 +353,135 @@ app.post("/payment/verify", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// ================= CHATBOT ENDPOINT =================
+app.post("/chat", async (req, res) => {
+  const { message, history } = req.body;
+
+  if (!message) {
+    return res.status(400).json({ error: "Message is required" });
+  }
+
+  // 1. Check if Gemini API key is configured
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    console.log("[Chatbot] GEMINI_API_KEY not found in environment. Using fallback assistant.");
+    const reply = getLocalChatFallback(message);
+    // Mimic API delay for realistic feel
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    return res.json({ reply });
+  }
+
+  try {
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      systemInstruction: `You are Aura, the warm and welcoming AI Customer Support Assistant for "Aura Spa & Salon". 
+Your goal is to assist users in a professional, serene, and helpful manner.
+
+Here is the key context about Aura Spa & Salon:
+1. SERVICES & PRICING:
+   - Massage Therapy:
+     * Swedish Massage (60/90 mins) - ₹2,000 / ₹3,000. Relaxing, light-to-medium pressure.
+     * Deep Tissue Massage (60/90 mins) - ₹2,500 / ₹3,700. Relieves deep muscle tension.
+     * Hot Stone Massage (90 mins) - ₹4,500. Warming volcanic stones.
+   - Facials & Skincare:
+     * HydraFacial (60 mins) - ₹3,500. Deep cleansing, exfoliation, hydration.
+     * Charcoal Detox Facial (60 mins) - ₹2,000. Removes impurities.
+     * Glow Facial (45 mins) - ₹1,500. Quick skin brightening.
+   - Hair Care:
+     * Spa Haircut & Styling - ₹1,200. Includes wash and blow-dry.
+     * Hair Spa Treatment - ₹2,500. Nourishing deep conditioning.
+     * Global Hair Coloring - ₹3,800+. Premium hair dye.
+   - Body Scrubs & Wraps:
+     * Salt Glow Body Scrub (45 mins) - ₹2,500. Full body exfoliation.
+     * Herbal Mud Wrap (60 mins) - ₹3,500. Detoxifying and skin-smoothing.
+
+2. BOOKING AN APPOINTMENT:
+   - Customers can book online by visiting the Booking page at '/book'.
+   - They can select their desired service, duration, location (At Parlor or At Home), date, time, and specialist.
+   - We support online payment via Razorpay or Cash on Delivery (COD).
+
+3. PHYSICAL LOCATIONS:
+   - Downtown Sanctuary: 101 Serenity Way, City Center (Open Daily: 8:00 AM - 10:00 PM)
+   - Coastal Retreat: 505 Ocean Breeze Blvd, Marina Bay (Open Daily: 9:00 AM - 9:00 PM)
+
+4. REFUND & CANCELLATION POLICY:
+   - Appointments can be cancelled or rescheduled up to 4 hours in advance free of charge.
+   - Late cancellations or no-shows may incur a 50% fee.
+
+5. PAYMENT INTEGRATION:
+   - We support 100% secure payments via Razorpay (Credit cards, UPI, Netbanking) during checkout, or Cash on Delivery (COD) which allows customers to pay after service completion.
+
+Guidelines:
+- Keep your responses relatively concise, serene, and friendly (max 2-3 short paragraphs).
+- Direct customers to specific pages if appropriate: '/book' for booking, '/user' for checking their profile or history, '/services' to view the catalog, and '/offers' to view promotions.
+- Be polite. If you don't know something, offer to let them contact us directly via the contact page or message forms.
+`
+    });
+
+    // Format chat history to Gemini structure
+    const formattedHistory = (history || []).map((msg) => ({
+      role: msg.role === "user" ? "user" : "model",
+      parts: [{ text: msg.content || msg.text || "" }],
+    }));
+
+    const chat = model.startChat({
+      history: formattedHistory,
+    });
+
+    const result = await chat.sendMessage(message);
+    const replyText = result.response.text();
+
+    res.json({ reply: replyText });
+  } catch (error) {
+    console.error("[Chatbot Error]:", error);
+    // Fall back to local rules if Gemini API fails during live call
+    const reply = getLocalChatFallback(message);
+    res.json({ reply, error: error.message });
+  }
+});
+
+// Helper for local keyword chat fallback
+function getLocalChatFallback(message) {
+  const msg = message.toLowerCase().trim();
+  
+  if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey") || msg.includes("greetings")) {
+    return "Hello! I am Aura, your virtual wellness assistant at Aura Spa & Salon. How can I help you relax or plan your visit today?";
+  }
+  
+  if (msg.includes("price") || msg.includes("pricing") || msg.includes("cost") || msg.includes("rate") || msg.includes("charge")) {
+    return "We offer premium spa & beauty treatments. Here are some of our popular services:\n\n• Swedish Massage (60 mins) — ₹2,000\n• Deep Tissue Massage (60 mins) — ₹2,500\n• HydraFacial (60 mins) — ₹3,500\n• Hair Spa Treatment — ₹2,500\n• Salt Glow Body Scrub — ₹2,500\n\nYou can view the full menu on our /services page, or schedule a session directly on our /book page.";
+  }
+  
+  if (msg.includes("book") || msg.includes("appointment") || msg.includes("schedule") || msg.includes("reserve") || msg.includes("slot")) {
+    return "Booking is easy! Head to our Book Appointment page at /book. You can customize your treatment type, location (At Parlor or At Home), choice of specialist, date, and time. You can choose to pay in advance via Razorpay or choose Cash on Delivery.";
+  }
+  
+  if (msg.includes("payment") || msg.includes("razorpay") || msg.includes("pay") || msg.includes("card") || msg.includes("upi") || msg.includes("cod")) {
+    return "We support secure payments via Razorpay (which accepts Credit/Debit Cards, UPI, and Netbanking) on our /checkout page. We also offer Cash on Delivery (COD), allowing you to pay in cash or via card after your treatment is complete.";
+  }
+  
+  if (msg.includes("location") || msg.includes("address") || msg.includes("where") || msg.includes("branch") || msg.includes("store")) {
+    return "We have two peaceful locations:\n1. Downtown Sanctuary: 101 Serenity Way, City Center (Open Daily: 8:00 AM - 10:00 PM)\n2. Coastal Retreat: 505 Ocean Breeze Blvd, Marina Bay (Open Daily: 9:00 AM - 9:00 PM)\n\nFind complete maps on our /locations page.";
+  }
+  
+  if (msg.includes("cancel") || msg.includes("refund") || msg.includes("reschedule") || msg.includes("policy")) {
+    return "You can cancel or reschedule appointments free of charge up to 4 hours in advance. To view or cancel your upcoming bookings, visit your Profile page at /user. Late cancellations/no-shows are subject to a 50% fee.";
+  }
+  
+  if (msg.includes("hour") || msg.includes("time") || msg.includes("open") || msg.includes("close")) {
+    return "Our Downtown Sanctuary branch is open daily from 8:00 AM to 10:00 PM. Our Coastal Retreat branch is open daily from 9:00 AM to 9:00 PM.";
+  }
+  
+  if (msg.includes("offer") || msg.includes("discount") || msg.includes("coupon") || msg.includes("promo") || msg.includes("deal")) {
+    return "We offer seasonal discounts and packages! Check out all active deals on our /offers page, including first-time guest privileges.";
+  }
+  
+  if (msg.includes("specialist") || msg.includes("staff") || msg.includes("therapist") || msg.includes("stylist") || msg.includes("therapists")) {
+    return "Our team consists of highly trained and certified therapists and styling specialists. You can read their profiles on our /specialists page and select your preferred specialist when booking at /book.";
+  }
+  
+  return "That sounds wonderful! As your wellness assistant, I'd suggest checking our list of premium services at /services, or booking your serene getaway at /book. Let me know if you have any questions about specific massages, facials, or styling treatments!";
+}
+

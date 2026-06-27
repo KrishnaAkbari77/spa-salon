@@ -29,7 +29,7 @@ const BookAppointment = () => {
   useEffect(() => {
     const fetchStaff = async () => {
       try {
-        const res = await fetch("http://localhost:3001/staff");
+        const res = await fetch("http://localhost:3002/staff");
         if (res.ok) {
           const data = await res.json();
           setSpecialistsData(data);
@@ -75,18 +75,18 @@ const BookAppointment = () => {
   ].includes(selectedService);
 
   const getPrice = () => {
-    if (isHairService) return "₹50+";
+    if (isHairService) return "₹4,676+";
     switch (sessionLength) {
       case "30 mins":
-        return "₹20";
+        return "₹1,870";
       case "60 mins":
-        return "₹40";
+        return "₹3,740";
       case "90 mins":
-        return "₹60";
+        return "₹5,611";
       case "120 mins":
-        return "₹80";
+        return "₹7,481";
       default:
-        return "₹20";
+        return "₹1,870";
     }
   };
 
@@ -167,14 +167,13 @@ const BookAppointment = () => {
                   >
                     <span className="len">{len}</span>
                     <span className="price">
-                      ₹
                       {len === "30 mins"
-                        ? "20"
+                        ? "₹1,870"
                         : len === "60 mins"
-                          ? "40"
+                          ? "₹3,740"
                           : len === "90 mins"
-                            ? "60"
-                            : "80"}
+                            ? "₹5,611"
+                            : "₹7,481"}
                     </span>
                   </div>
                 ))}

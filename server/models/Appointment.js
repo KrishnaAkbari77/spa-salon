@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 
 const appointmentSchema = new mongoose.Schema({
-  userId: { type: String, required: true }, // Using String to easily support '1', '2' or ObjectIds depending on frontend transition
+  userId: { type: String }, 
+  userName: { type: String },
   service: { type: String, required: true },
   duration: { type: String },
   place: { type: String },
@@ -10,6 +11,8 @@ const appointmentSchema = new mongoose.Schema({
   time: { type: String, required: true },
   price: { type: String },
   paymentMethod: { type: String },
+  staffId: { type: String },
+  staff: { type: Object },
   status: { type: String, default: "upcoming" },
 });
 

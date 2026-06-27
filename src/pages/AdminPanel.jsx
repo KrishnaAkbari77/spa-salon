@@ -6,6 +6,17 @@ import { Calendar as CalendarIcon, Users, Briefcase, Edit2, Trash2, X, LayoutDas
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from "recharts";
 import "./AdminPanel.css";
 
+const SERVICES_LIST = [
+  "SPA & WELLNESS",
+  "FACIAL THERAPY",
+  "HOLISTIC MASSAGE",
+  "HOT STONE MASSAGE",
+  "HAIRCUTS, STYLING & COLORING",
+  "HAIR TREATMENTS",
+  "FACIAL",
+  "BODY MASSAGE"
+];
+
 const AdminPanel = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -21,32 +32,49 @@ const AdminPanel = () => {
   const [selectedAppt, setSelectedAppt] = useState(null);
   const [newDate, setNewDate] = useState("");
   const [newTime, setNewTime] = useState("");
+  const [newStaffId, setNewStaffId] = useState("");
 
   // New Appointment Modal State
   const [showAddApptModal, setShowAddApptModal] = useState(false);
-  const [addApptData, setAddApptData] = useState({ userId: "", service: "", date: "", time: "", place: "Salon", price: "50" });
+  const [addApptData, setAddApptData] = useState({ 
+    userId: "", 
+    userName: "", // For manual entry
+    service: SERVICES_LIST[0], 
+    date: "", 
+    time: "", 
+    place: "At Parlor", 
+    price: "4,676",
+    staffId: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // New Staff State
   const [newStaffName, setNewStaffName] = useState("");
   const [newStaffRole, setNewStaffRole] = useState("");
-  const [newStaffPhone, setNewStaffPhone] = useState("");
+  const [newStaffImage, setNewStaffImage] = useState("");
+  const [newStaffService, setNewStaffService] = useState(SERVICES_LIST[0]);
+
+  // Edit Staff State
+  const [showStaffModal, setShowStaffModal] = useState(false);
+  const [selectedStaff, setSelectedStaff] = useState(null);
+  const [editStaffData, setEditStaffData] = useState({ name: "", role: "", image: "", serviceKey: "" });
 
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const fetchData = async () => {
     try {
-      const apptRes = await fetch("http://localhost:3001/appointments");
+      const apptRes = await fetch("http://localhost:3002/appointments");
       const apptData = await apptRes.json();
       apptData.sort((a, b) => new Date(b.date) - new Date(a.date));
       setAppointments(apptData);
 
-      const userRes = await fetch("http://localhost:3001/users");
+      const userRes = await fetch("http://localhost:3002/users");
       setUsers(await userRes.json());
 
-      const staffRes = await fetch("http://localhost:3001/staff");
+      const staffRes = await fetch("http://localhost:3002/staff");
       setStaff(await staffRes.json());
 
-      const feedbackRes = await fetch("http://localhost:3001/feedbacks");
+      const feedbackRes = await fetch("http://localhost:3002/feedbacks");
       const feedbackData = await feedbackRes.json();
       feedbackData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setFeedbacks(feedbackData);
@@ -67,6 +95,7 @@ const AdminPanel = () => {
     setSelectedAppt(appt);
     setNewDate(appt.date);
     setNewTime(appt.time);
+    setNewStaffId(appt.staffId || appt.staff?.id || "");
     setShowModal(true);
   };
 
@@ -75,20 +104,21 @@ const AdminPanel = () => {
     if (!selectedAppt) return;
 
     try {
-      const updatedAppt = { ...selectedAppt, date: newDate, time: newTime };
-      await fetch(`http://localhost:3001/appointments/${selectedAppt.id}`, {
+      const updatedAppt = { ...selectedAppt, date: newDate, time: newTime, staffId: newStaffId };
+      await fetch(`http://localhost:3002/appointments/${selectedAppt.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedAppt)
       });
 
+      const appStaff = staff.find(s => String(s.id) === String(newStaffId));
       const message = {
         userId: selectedAppt.userId,
-        text: `Your appointment for ${selectedAppt.service} has been rescheduled by the admin to ${newDate} at ${newTime}.`,
+        text: `Your appointment for ${selectedAppt.service} has been updated. New time: ${newDate} at ${newTime}. Assigned Specialist: ${appStaff?.name || 'Any'}.`,
         createdAt: new Date().toISOString(),
         read: false
       };
-      await fetch("http://localhost:3001/messages", {
+      await fetch("http://localhost:3002/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(message)
@@ -104,41 +134,142 @@ const AdminPanel = () => {
 
   const handleAddAppointment = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    console.log("handleAddAppointment triggered with data:", addApptData);
     try {
-      await fetch("http://localhost:3001/appointments", {
+      const payload = { 
+        ...addApptData, 
+        status: 'upcoming', 
+        paymentMethod: 'Cash on Delivery' 
+      };
+      
+      console.log("Sending payload to server:", payload);
+      const res = await fetch("http://localhost:3002/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...addApptData, status: 'upcoming' })
+        body: JSON.stringify(payload)
       });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText || "Failed to add appointment");
+      }
+
       setShowAddApptModal(false);
+      setAddApptData({ 
+        userId: "", 
+        userName: "", 
+        service: SERVICES_LIST[0], 
+        date: "", 
+        time: "", 
+        place: "At Parlor", 
+        price: "4,676",
+        staffId: ""
+      });
       fetchData();
       alert("Appointment added!");
     } catch (err) {
       console.error("Failed to add appointment", err);
+      alert(`Failed to add appointment: ${err.message}`);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleFileChange = (e, callback) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        callback(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDeleteAppointment = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this appointment?")) return;
+    try {
+      await fetch(`http://localhost:3002/appointments/${id}`, { method: "DELETE" });
+      fetchData();
+    } catch (err) {
+      console.error("Failed to delete appointment", err);
+    }
+  };
+
+  const openEditStaffModal = (s) => {
+    setSelectedStaff(s);
+    setEditStaffData({ name: s.name, role: s.role, image: s.image, serviceKey: s.serviceKey });
+    setShowStaffModal(true);
+  };
+
+  const handleEditStaff = async (e) => {
+    e.preventDefault();
+    if (!selectedStaff) return;
+    try {
+      const res = await fetch(`http://localhost:3002/staff/${selectedStaff.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editStaffData) // Only send the edited fields
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to update staff");
+      }
+
+      setShowStaffModal(false);
+      fetchData();
+      alert("Staff updated!");
+    } catch (err) {
+      console.error("Failed to edit staff", err);
+      alert(`Error: ${err.message}`);
     }
   };
 
   const handleAddStaff = async (e) => {
     e.preventDefault();
     try {
-      await fetch("http://localhost:3001/staff", {
+      const res = await fetch("http://localhost:3002/staff", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newStaffName, role: newStaffRole, phone: newStaffPhone })
+        body: JSON.stringify({ 
+          name: newStaffName, 
+          role: newStaffRole, 
+          image: newStaffImage || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop",
+          serviceKey: newStaffService,
+          achievement: `${newStaffRole} at aura`
+        })
       });
+
+      if (!res.ok) {
+        let errorMessage = "Server error";
+        const resText = await res.text();
+        try {
+          const errorData = JSON.parse(resText);
+          errorMessage = errorData.error || errorMessage;
+        } catch (e) {
+          errorMessage = resText.slice(0, 100) || "Unknown error";
+        }
+        throw new Error(errorMessage);
+      }
+
       setNewStaffName("");
       setNewStaffRole("");
-      setNewStaffPhone("");
+      setNewStaffImage("");
       fetchData();
+      alert("New specialist added successfully!");
     } catch (err) {
       console.error("Failed to add staff", err);
+      alert(`Failed to add specialist: ${err.message}`);
     }
   };
 
   const handleDeleteStaff = async (id) => {
     if (!window.confirm("Are you sure you want to remove this staff member?")) return;
     try {
-      await fetch(`http://localhost:3001/staff/${id}`, { method: "DELETE" });
+      await fetch(`http://localhost:3002/staff/${id}`, { method: "DELETE" });
       fetchData();
     } catch (err) {
       console.error("Failed to delete staff", err);
@@ -148,7 +279,7 @@ const AdminPanel = () => {
   const handleDeleteUser = async (id) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     try {
-      await fetch(`http://localhost:3001/users/${id}`, { method: "DELETE" });
+      await fetch(`http://localhost:3002/users/${id}`, { method: "DELETE" });
       fetchData();
     } catch (err) {
       console.error("Failed to delete user", err);
@@ -157,7 +288,7 @@ const AdminPanel = () => {
 
   const handleUpdateFeedbackStatus = async (id, status) => {
     try {
-      await fetch(`http://localhost:3001/feedbacks/${id}`, {
+      await fetch(`http://localhost:3002/feedbacks/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status })
@@ -210,19 +341,19 @@ const AdminPanel = () => {
         <div
           key={day}
           className="calendar-day"
-          onClick={() => {
-            setAddApptData({ ...addApptData, date: dateStr });
-            setShowAddApptModal(true);
-          }}
         >
           <span className="day-number">{day}</span>
           <div className="day-appointments">
-            {dayAppointments.slice(0, 3).map(app => (
-              <div key={app.id} className="mini-appt" title={`${app.time} - ${app.service}`}>
-                <div className="mini-avatar">{users.find(u => String(u.id) === String(app.userId))?.name?.charAt(0) || 'U'}</div>
-                <span>{app.time}</span>
-              </div>
-            ))}
+            {dayAppointments.slice(0, 3).map(app => {
+              const appUser = users.find(u => String(u.id) === String(app.userId));
+              const displayName = appUser ? appUser.name : (app.userName || "Guest");
+              return (
+                <div key={app.id} className="mini-appt" title={`${app.time} - ${app.service}`}>
+                  <div className="user-name">{displayName}</div>
+                  <div className="service-name">{app.service}</div>
+                </div>
+              );
+            })}
             {dayAppointments.length > 3 && <div className="more-appts">+{dayAppointments.length - 3} more</div>}
           </div>
         </div>
@@ -356,26 +487,40 @@ const AdminPanel = () => {
                       <th>Service</th>
                       <th>Date & Time</th>
                       <th>Location</th>
-                      <th>User ID</th>
+                      <th>Customer</th>
                       <th>Status</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {appointments.map(app => (
-                      <tr key={app.id}>
-                        <td><strong>{app.service}</strong></td>
-                        <td>{app.date} at {app.time}</td>
-                        <td>{app.place}</td>
-                        <td>#{app.userId}</td>
-                        <td><span className={`status ${app.status}`}>{app.status}</span></td>
-                        <td>
-                          <button onClick={() => openRescheduleModal(app)} className="btn-reschedule">
-                            <Edit2 size={14} /> Reschedule
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                    {appointments.map(app => {
+                      const appUser = users.find(u => String(u.id) === String(app.userId));
+                      const displayName = appUser ? appUser.name : (app.userName || "Guest");
+                      
+                      return (
+                        <tr key={app.id}>
+                          <td><strong>{app.service}</strong></td>
+                          <td>{app.date} at {app.time}</td>
+                          <td>{app.place}</td>
+                          <td>
+                            <div className="customer-info">
+                              <strong>{displayName}</strong>
+                            </div>
+                          </td>
+                          <td><span className={`status ${app.status}`}>{app.status}</span></td>
+                          <td>
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                              <button onClick={() => openRescheduleModal(app)} className="btn-reschedule">
+                                <Edit2 size={14} /> Reschedule
+                              </button>
+                              <button onClick={() => handleDeleteAppointment(app.id)} className="btn-delete">
+                                <Trash2 size={14} /> Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -426,11 +571,17 @@ const AdminPanel = () => {
 
               <form onSubmit={handleAddStaff} className="add-staff-form">
                 <h4>Add New Staff</h4>
-                <div className="form-row">
+                <div className="form-row" style={{ flexWrap: 'wrap' }}>
                   <input type="text" placeholder="Full Name" value={newStaffName} onChange={e => setNewStaffName(e.target.value)} required />
                   <input type="text" placeholder="Role (e.g. Therapist)" value={newStaffRole} onChange={e => setNewStaffRole(e.target.value)} required />
-                  <input type="text" placeholder="Phone" value={newStaffPhone} onChange={e => setNewStaffPhone(e.target.value)} required />
-                  <button type="submit">Add</button>
+                  <div className="file-input-wrapper">
+                    <label>Upload Profile Picture</label>
+                    <input type="file" accept="image/*" onChange={e => handleFileChange(e, setNewStaffImage)} />
+                  </div>
+                  <select value={newStaffService} onChange={e => setNewStaffService(e.target.value)} required>
+                    {SERVICES_LIST.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                  <button type="submit">Add Specialist</button>
                 </div>
               </form>
 
@@ -438,22 +589,31 @@ const AdminPanel = () => {
                 <table>
                   <thead>
                     <tr>
+                      <th>Profile</th>
                       <th>Name</th>
                       <th>Role</th>
-                      <th>Phone</th>
+                      <th>Service Category</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {staff.map(s => (
                       <tr key={s.id}>
+                        <td>
+                          <img src={s.image} alt={s.name} style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #eee' }} />
+                        </td>
                         <td><strong>{s.name}</strong></td>
                         <td>{s.role}</td>
-                        <td>{s.phone}</td>
+                        <td><span className="badge-service">{s.serviceKey}</span></td>
                         <td>
-                          <button onClick={() => handleDeleteStaff(s.id)} className="btn-delete">
-                            <Trash2 size={14} /> Remove
-                          </button>
+                          <div style={{ display: 'flex', gap: '10px' }}>
+                            <button onClick={() => openEditStaffModal(s)} className="btn-reschedule">
+                              <Edit2 size={14} /> Edit
+                            </button>
+                            <button onClick={() => handleDeleteStaff(s.id)} className="btn-delete">
+                              <Trash2 size={14} /> Remove
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -514,7 +674,14 @@ const AdminPanel = () => {
                 <label>New Time</label>
                 <input type="time" value={newTime} onChange={e => setNewTime(e.target.value)} required />
               </div>
-              <button type="submit" className="btn-submit-reschedule">Confirm Reschedule & Notify User</button>
+              <div className="form-group">
+                <label>Reassign Specialist</label>
+                <select value={newStaffId} onChange={e => setNewStaffId(e.target.value)} required>
+                  <option value="">Select Specialist</option>
+                  {staff.map(s => <option key={s.id} value={s.id}>{s.name} ({s.role})</option>)}
+                </select>
+              </div>
+              <button type="submit" className="btn-submit-reschedule">Update Appointment & Notify User</button>
             </form>
           </div>
         </div>
@@ -530,15 +697,28 @@ const AdminPanel = () => {
             </div>
             <form onSubmit={handleAddAppointment}>
               <div className="form-group">
-                <label>User ID</label>
-                <select value={addApptData.userId} onChange={e => setAddApptData({ ...addApptData, userId: e.target.value })} required>
-                  <option value="">Select User</option>
+                <label>Select Registered User</label>
+                <select value={addApptData.userId} onChange={e => setAddApptData({ ...addApptData, userId: e.target.value, userName: "" })}>
+                  <option value="">-- Select User --</option>
                   {users.map(u => <option key={u.id} value={u.id}>{u.name} (#{u.id})</option>)}
                 </select>
               </div>
               <div className="form-group">
+                <label>OR Enter Manual Name</label>
+                <input type="text" placeholder="Guest Name" value={addApptData.userName} onChange={e => setAddApptData({ ...addApptData, userName: e.target.value, userId: "" })} disabled={addApptData.userId !== ""} />
+              </div>
+              <div className="form-group">
                 <label>Service</label>
-                <input type="text" placeholder="e.g. Swedish Massage" value={addApptData.service} onChange={e => setAddApptData({ ...addApptData, service: e.target.value })} required />
+                <select value={addApptData.service} onChange={e => setAddApptData({ ...addApptData, service: e.target.value })} required>
+                  {SERVICES_LIST.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Assign Specialist</label>
+                <select value={addApptData.staffId} onChange={e => setAddApptData({ ...addApptData, staffId: e.target.value })} required>
+                  <option value="">Select Specialist</option>
+                  {staff.map(s => <option key={s.id} value={s.id}>{s.name} ({s.role})</option>)}
+                </select>
               </div>
               <div className="form-row">
                 <div className="form-group">
@@ -550,7 +730,45 @@ const AdminPanel = () => {
                   <input type="time" value={addApptData.time} onChange={e => setAddApptData({ ...addApptData, time: e.target.value })} required />
                 </div>
               </div>
-              <button type="submit" className="btn-submit-reschedule">Add Appointment</button>
+              <button type="submit" className="btn-submit-reschedule" disabled={isSubmitting}>
+                {isSubmitting ? "Adding..." : "Add Appointment"}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Staff Modal */}
+      {showStaffModal && (
+        <div className="modal-overlay">
+          <div className="modal card">
+            <div className="modal-header">
+              <h3>Edit Specialist</h3>
+              <button onClick={() => setShowStaffModal(false)} className="btn-close"><X size={20} /></button>
+            </div>
+            <form onSubmit={handleEditStaff}>
+              <div className="form-group">
+                <label>Full Name</label>
+                <input type="text" value={editStaffData.name} onChange={e => setEditStaffData({ ...editStaffData, name: e.target.value })} required />
+              </div>
+              <div className="form-group">
+                <label>Role</label>
+                <input type="text" value={editStaffData.role} onChange={e => setEditStaffData({ ...editStaffData, role: e.target.value })} required />
+              </div>
+              <div className="form-group">
+                <label>Profile Image</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '10px' }}>
+                  <img src={editStaffData.image} alt="preview" style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }} />
+                  <input type="file" accept="image/*" onChange={e => handleFileChange(e, (res) => setEditStaffData({ ...editStaffData, image: res }))} />
+                </div>
+              </div>
+              <div className="form-group">
+                <label>Service Category</label>
+                <select value={editStaffData.serviceKey} onChange={e => setEditStaffData({ ...editStaffData, serviceKey: e.target.value })} required>
+                  {SERVICES_LIST.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
+              <button type="submit" className="btn-submit-reschedule">Save Changes</button>
             </form>
           </div>
         </div>

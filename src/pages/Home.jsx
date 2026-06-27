@@ -15,7 +15,7 @@ const Home = () => {
     const fetchFeedbacks = async () => {
       try {
         const res = await fetch(
-          "http://localhost:3001/feedbacks?status=approved",
+          "http://localhost:3002/feedbacks?status=approved",
         );
         const data = await res.json();
         setApprovedFeedbacks(data);
@@ -241,53 +241,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* BOOK APPOINTMENT CTA */}
-      <section className="book-cta container">
-        <div className="book-cta-wrapper">
-          <div className="book-form">
-            <h2>
-              Book Your <em>Appointment</em> Today
-            </h2>
-            <form>
-              <div className="form-group">
-                <input type="text" placeholder="Your Name" />
-                <input type="email" placeholder="Email" />
-              </div>
-              <div className="form-group">
-                <input type="date" />
-                <select>
-                  <option>Select Service</option>
-                  <option>SPA PACKAGES</option>
-                  <option>NAIL ART</option>
-                  <option>MANICURE / PEDICURE</option>
-                  <option>FACIAL</option>
-                  <option>WAXING</option>
-                  <option>BODY MASSAGE</option>
-                  <option>BODY TREATMENTS</option>
-                  <option>MICRODERMABRASION</option>
-                  <option>EYELASH EXTENSIONS</option>
-                  <option>PHOTOFACIAL TREATMENT</option>
-                  <option>SPA & WELLNESS</option>
-                  <option>FACIAL THERAPY</option>
-                  <option>HOLISTIC MASSAGE</option>
-                  <option>HOT STONE MASSAGE</option>
-                </select>
-              </div>
-              <textarea placeholder="Message"></textarea>
-              <Link
-                to="/book"
-                className="btn-submit"
-                style={{ display: "inline-block", textAlign: "center" }}
-              >
-                Book Appointment
-              </Link>
-            </form>
-          </div>
-          <div className="book-img">
-            <img src={service1} alt="Book" />
-          </div>
-        </div>
-      </section>
+    
     </div>
   );
 };

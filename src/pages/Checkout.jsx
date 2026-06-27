@@ -32,7 +32,7 @@ const Checkout = () => {
     address: "",
     date: "2026-05-01",
     time: "10:00 AM",
-    price: "₹40",
+    price: "₹3,740",
   };
 
   const [paymentMethod, setPaymentMethod] = useState("razorpay");
@@ -58,7 +58,7 @@ const Checkout = () => {
         status: "upcoming",
       };
 
-      await fetch("http://localhost:3001/appointments", {
+      await fetch("http://localhost:3002/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newAppointment),
@@ -79,15 +79,15 @@ const Checkout = () => {
       return;
     }
 
-    // Extract numerical value from price string (e.g. "₹40" -> 40)
-    const numericPrice = bookingDetails.price.replace(/[^0-9]/g, "");
+    // Extract numerical value from price string (e.g. "₹3,740" -> 3740)
+    const numericPrice = bookingDetails.price.replace(/[^0-9.]/g, "");
     const amountInCurrency = numericPrice
-      ? parseInt(numericPrice, 10) * 80
-      : 500; // Mock conversion
+      ? Math.round(parseFloat(numericPrice) * 100)
+      : 50000; // Mock conversion (₹500 in paisa)
 
     try {
       // Step 1: Create Order from backend
-      const result = await fetch("http://localhost:3001/payment/orders", {
+      const result = await fetch("http://localhost:3002/payment/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount: amountInCurrency, currency: "INR" }),
@@ -111,7 +111,7 @@ const Checkout = () => {
           try {
             // Step 2: Verify Payment
             const verifyResult = await fetch(
-              "http://localhost:3001/payment/verify",
+              "http://localhost:3002/payment/verify",
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

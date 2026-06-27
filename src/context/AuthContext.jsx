@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const res = await fetch(
-        `http://localhost:3001/users?email=${email}&password=${password}`,
+        `http://localhost:3002/users?email=${email}&password=${password}`,
       );
       const data = await res.json();
 
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     try {
       // First check if user exists
       const checkRes = await fetch(
-        `http://localhost:3001/users?email=${email}`,
+        `http://localhost:3002/users?email=${email}`,
       );
       const existingUsers = await checkRes.json();
 
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       // Create user
-      const res = await fetch("http://localhost:3001/users", {
+      const res = await fetch("http://localhost:3002/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, phone, password }),
