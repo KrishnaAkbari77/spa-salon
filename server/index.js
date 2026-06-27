@@ -449,11 +449,27 @@ function getLocalChatFallback(message) {
     return "Hello! I am Aura, your virtual wellness assistant at Aura Spa & Salon. How can I help you relax or plan your visit today?";
   }
   
+  // 1. Cancellation / Refund / Rescheduling (Priority over general booking)
+  if (
+    msg.includes("cancel") || 
+    msg.includes("cacel") || 
+    msg.includes("cancle") || 
+    msg.includes("cancell") || 
+    msg.includes("refund") || 
+    msg.includes("reschedul") || 
+    msg.includes("policy") ||
+    msg.includes("delete") ||
+    msg.includes("remove") ||
+    msg.includes("change")
+  ) {
+    return "You can cancel or reschedule appointments free of charge up to 4 hours in advance. To view or cancel your upcoming bookings, visit your Profile page at /user. Late cancellations/no-shows are subject to a 50% fee.";
+  }
+  
   if (msg.includes("price") || msg.includes("pricing") || msg.includes("cost") || msg.includes("rate") || msg.includes("charge")) {
     return "We offer premium spa & beauty treatments. Here are some of our popular services:\n\n• Swedish Massage (60 mins) — ₹2,000\n• Deep Tissue Massage (60 mins) — ₹2,500\n• HydraFacial (60 mins) — ₹3,500\n• Hair Spa Treatment — ₹2,500\n• Salt Glow Body Scrub — ₹2,500\n\nYou can view the full menu on our /services page, or schedule a session directly on our /book page.";
   }
   
-  if (msg.includes("book") || msg.includes("appointment") || msg.includes("schedule") || msg.includes("reserve") || msg.includes("slot")) {
+  if (msg.includes("book") || msg.includes("appointment") || msg.includes("apointment") || msg.includes("schedule") || msg.includes("reserve") || msg.includes("slot")) {
     return "Booking is easy! Head to our Book Appointment page at /book. You can customize your treatment type, location (At Parlor or At Home), choice of specialist, date, and time. You can choose to pay in advance via Razorpay or choose Cash on Delivery.";
   }
   
@@ -463,10 +479,6 @@ function getLocalChatFallback(message) {
   
   if (msg.includes("location") || msg.includes("address") || msg.includes("where") || msg.includes("branch") || msg.includes("store")) {
     return "We have two peaceful locations:\n1. Downtown Sanctuary: 101 Serenity Way, City Center (Open Daily: 8:00 AM - 10:00 PM)\n2. Coastal Retreat: 505 Ocean Breeze Blvd, Marina Bay (Open Daily: 9:00 AM - 9:00 PM)\n\nFind complete maps on our /locations page.";
-  }
-  
-  if (msg.includes("cancel") || msg.includes("refund") || msg.includes("reschedule") || msg.includes("policy")) {
-    return "You can cancel or reschedule appointments free of charge up to 4 hours in advance. To view or cancel your upcoming bookings, visit your Profile page at /user. Late cancellations/no-shows are subject to a 50% fee.";
   }
   
   if (msg.includes("hour") || msg.includes("time") || msg.includes("open") || msg.includes("close")) {
