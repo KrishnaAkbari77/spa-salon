@@ -3,6 +3,14 @@ import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import dns from "dns";
+
+// Set DNS servers to Google's public DNS to bypass local router DNS resolution limits for MongoDB Atlas
+try {
+  dns.setServers(["8.8.8.8", "8.8.4.4"]);
+} catch (err) {
+  console.warn("Unable to set Google DNS servers:", err.message);
+}
 
 // Import Models
 import User from "./models/User.js";
@@ -43,8 +51,9 @@ app.use((err, req, res, next) => {
 });
 
 // MongoDB Connection
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/spasalon";
 mongoose
-  .connect("mongodb://localhost:27017/spasalon")
+  .connect(MONGODB_URI)
   .then(async () => {
     console.log("Connected to MongoDB successfully!");
 
@@ -446,13 +455,14 @@ Guidelines:
     // Fall back to local rules if Gemini API fails during live call
     const reply = getLocalChatFallback(message);
     res.json({ reply, error: error.message });
+  }
 });
 
 // Serve static built files from client (Vite build)
 app.use(express.static(path.join(__dirname, "../dist")));
 
 // SPA Catch-all Route: redirect non-API client requests to the single-page application entry point
-app.get("*", (req, res) => {
+app.get("*any", (req, res) => {
   res.sendFile(path.join(__dirname, "../dist/index.html"));
 });
 
