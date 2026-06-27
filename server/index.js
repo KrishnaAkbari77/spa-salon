@@ -306,9 +306,15 @@ app.listen(PORT, () => {
 
 // Razorpay Integration
 const razorpay = new Razorpay({
+<<<<<<< HEAD
+  key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_Sespjc2xXLVyJx',
+  key_secret: process.env.RAZORPAY_KEY_SECRET || '30FXhXAHVY6PSGyKPDmbNETY',
+}); 
+=======
   key_id: process.env.RAZORPAY_KEY_ID || "rzp_test_Sespjc2xXLVyJx",
   key_secret: process.env.RAZORPAY_KEY_SECRET || "30FXhXAHVY6PSGyKPDmbNETY",
 });
+>>>>>>> 19f03e179229129838e64c6a8b556ab8334ac9c4
 
 // Payment Endpoints
 app.post("/payment/orders", async (req, res) => {
