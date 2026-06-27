@@ -402,8 +402,11 @@ Here is the key context about Aura Spa & Salon:
    - We support online payment via Razorpay or Cash on Delivery (COD).
 
 3. PHYSICAL LOCATIONS:
-   - Downtown Sanctuary: 101 Serenity Way, City Center (Open Daily: 8:00 AM - 10:00 PM)
-   - Coastal Retreat: 505 Ocean Breeze Blvd, Marina Bay (Open Daily: 9:00 AM - 9:00 PM)
+   - Ahmedabad Branch (Downtown Sanctuary): 101, Shivalik High Street, Vastrapur, Ahmedabad (Open Daily: 8:00 AM - 10:00 PM)
+   - Surat Branch (Coastal Retreat): 402, Rajhans Heights, Piplod, Surat (Open Daily: 9:00 AM - 9:00 PM)
+   - Mumbai Branch: 456 Marine Drive, Mumbai (Open Daily: 9:00 AM - 10:00 PM)
+   - Delhi Branch: 12, Connaught Place, New Delhi (Open Daily: 9:00 AM - 10:00 PM)
+
 
 4. REFUND & CANCELLATION POLICY:
    - Appointments can be cancelled or rescheduled up to 4 hours in advance free of charge.
@@ -478,11 +481,11 @@ function getLocalChatFallback(message) {
   }
   
   if (msg.includes("location") || msg.includes("address") || msg.includes("where") || msg.includes("branch") || msg.includes("store")) {
-    return "We have two peaceful locations:\n1. Downtown Sanctuary: 101 Serenity Way, City Center (Open Daily: 8:00 AM - 10:00 PM)\n2. Coastal Retreat: 505 Ocean Breeze Blvd, Marina Bay (Open Daily: 9:00 AM - 9:00 PM)\n\nFind complete maps on our /locations page.";
+    return "We have premier Indian locations:\n1. Ahmedabad Branch: 101, Shivalik High Street, Vastrapur (Open 8 AM - 10 PM)\n2. Surat Branch: 402, Rajhans Heights, Piplod (Open 9 AM - 9 PM)\n3. Mumbai Branch: 456 Marine Drive, Mumbai (Open 9 AM - 10 PM)\n\nFind complete addresses and maps for all branches (including Delhi, Pune, and Bengaluru) on our /locations page.";
   }
   
   if (msg.includes("hour") || msg.includes("time") || msg.includes("open") || msg.includes("close")) {
-    return "Our Downtown Sanctuary branch is open daily from 8:00 AM to 10:00 PM. Our Coastal Retreat branch is open daily from 9:00 AM to 9:00 PM.";
+    return "Our Ahmedabad branch is open daily from 8:00 AM to 10:00 PM. Our Surat branch is open daily from 9:00 AM to 9:00 PM. Our Mumbai branch is open daily from 9:00 AM to 10:00 PM.";
   }
   
   if (msg.includes("offer") || msg.includes("discount") || msg.includes("coupon") || msg.includes("promo") || msg.includes("deal")) {

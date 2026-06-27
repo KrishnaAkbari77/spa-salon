@@ -13,45 +13,39 @@ import img7 from "../assets/tokyo.jpg";
 
 const locations = [
   {
-    city: "New York",
-    address: "123 Broadway, NY 10001",
-    phone: "+1 212-555-0100",
+    city: "Ahmedabad",
+    address: "101, Shivalik High Street, Vastrapur, Ahmedabad, Gujarat 380015",
+    phone: "+91 79-5555-0101",
     img: img1,
   },
   {
-    city: "Manhattan",
-    address: "456 5th Ave, NY 10018",
-    phone: "+1 212-555-0101",
+    city: "Surat",
+    address: "402, Rajhans Heights, Piplod, Surat, Gujarat 395007",
+    phone: "+91 261-555-0102",
     img: img2,
   },
   {
-    city: "Boston",
-    address: "789 Boylston St, MA 02116",
-    phone: "+1 617-555-0102",
-    img: img3,
-  },
-  {
-    city: "Los Angeles",
-    address: "101 Hollywood Blvd, CA 90028",
-    phone: "+1 323-555-0103",
-    img: img4,
-  },
-  {
-    city: "Seoul",
-    address: "123 Gangnam-daero, Seoul 06611",
-    phone: "+82 2-555-0104",
-    img: img5,
-  },
-  {
     city: "Mumbai",
-    address: "456 Marine Drive, MH 400020",
-    phone: "+91 22-5555-0105",
+    address: "456 Marine Drive, Mumbai, Maharashtra 400020",
+    phone: "+91 22-5555-0103",
     img: img6,
   },
   {
-    city: "Tokyo",
-    address: "789 Shibuya, Tokyo 150-0002",
-    phone: "+81 3-5555-0106",
+    city: "Delhi",
+    address: "12, Connaught Place, New Delhi, Delhi 110001",
+    phone: "+91 11-5555-0104",
+    img: img3,
+  },
+  {
+    city: "Bengaluru",
+    address: "89, Indiranagar Double Road, Bengaluru, Karnataka 560038",
+    phone: "+91 80-5555-0105",
+    img: img4,
+  },
+  {
+    city: "Pune",
+    address: "305, Koregaon Park Road, Pune, Maharashtra 411001",
+    phone: "+91 20-5555-0106",
     img: img7,
   },
 ];
@@ -66,7 +60,7 @@ const Locations = () => {
       <div className="locations-header">
         <h1>Find Our Sanctuaries</h1>
         <p>
-          Experience the ultimate holistic care at any of our global locations.
+          Experience the ultimate holistic care at any of our premier Indian locations.
         </p>
       </div>
 
